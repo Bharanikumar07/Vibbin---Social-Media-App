@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authenticateToken } from '../middleware/auth';
-import { upload } from '../utils/upload';
+import { upload, uploadToSupabase } from '../utils/upload';
 import { createNotification } from '../utils/notifications';
 
 const router = Router();
@@ -58,7 +58,10 @@ router.post('/', authenticateToken, upload.single('media'), async (req: any, res
             return res.status(400).json({ error: 'Please upload an image or video' });
         }
 
-        const media = `/uploads/${req.file.filename}`;
+        let media = '';
+        if (req.file) {
+            media = await uploadToSupabase(req.file);
+        }
         const expiresAt = new Date();
         expiresAt.setHours(expiresAt.getHours() + 24);
 
