@@ -94,7 +94,7 @@ router.post('/google', async (req, res, next) => {
 });
 
 import { authenticateToken } from '../middleware/auth';
-import { upload } from '../utils/upload';
+import { upload, uploadToSupabase } from '../utils/upload';
 
 router.put('/profile', authenticateToken, upload.single('profilePicture'), async (req: any, res, next) => {
     try {
@@ -103,7 +103,7 @@ router.put('/profile', authenticateToken, upload.single('profilePicture'), async
         let profilePicture = undefined;
 
         if (req.file) {
-            profilePicture = `/uploads/${req.file.filename}`;
+            profilePicture = await uploadToSupabase(req.file);
         }
 
         const dataToUpdate: any = {

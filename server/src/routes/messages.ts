@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authenticateToken } from '../middleware/auth';
-import { upload } from '../utils/upload';
+import { upload, uploadToSupabase } from '../utils/upload';
 import { createNotification } from '../utils/notifications';
 
 const router = Router();
@@ -103,7 +103,7 @@ router.post('/', authenticateToken, upload.single('image'), async (req: any, res
             return res.status(403).json({ error: 'You must be friends to message this user' });
         }
 
-        const image = req.file ? `/uploads/${req.file.filename}` : null;
+        const image = req.file ? await uploadToSupabase(req.file) : null;
 
         const message = await prisma.message.create({
             data: {

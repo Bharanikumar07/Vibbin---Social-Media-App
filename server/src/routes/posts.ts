@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { authenticateToken } from '../middleware/auth';
-import { upload } from '../utils/upload';
+import { upload, uploadToSupabase } from '../utils/upload';
 import { createNotification } from '../utils/notifications';
 
 const router = Router();
@@ -48,7 +48,7 @@ router.post('/', authenticateToken, upload.single('image'), async (req: any, res
         let image = null;
 
         if (req.file) {
-            image = `/uploads/${req.file.filename}`;
+            image = await uploadToSupabase(req.file);
         }
 
         const post = await prisma.post.create({
