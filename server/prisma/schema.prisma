@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id @default(uuid())
+  name           String
+  username       String          @unique
+  email          String          @unique
+  password       String
+  bio            String?
+  profilePicture String?
+  isOnline       Boolean         @default(false)
+  lastSeen       DateTime        @default(now())
+  notificationSound Boolean      @default(true)
+  posts          Post[]
+  stories        Story[]
+  sentRequests   FriendRequest[] @relation("SentRequests")
+  receivedRequests FriendRequest[] @relation("ReceivedRequests")
+  friends        Friendship[]    @relation("UserFriends")
+  friendsOf      Friendship[]    @relation("FriendUsers")
+  sentMessages     Message[]     @relation("SentMessages")
+  receivedMessages Message[]     @relation("ReceivedMessages")
+  likes          Like[]
+  comments       Comment[]
+  notifications  Notification[] @relation("UserNotifications")
+  sentNotifications Notification[] @relation("NotificationSender")
+  passwordResetTokens PasswordResetToken[]
+  storyViews     StoryView[]
+  storyLikes     StoryLike[]
+  storyComments  StoryComment[]
+  theme          String          @default("light")
+  createdAt      DateTime        @default(now())
+}
+
+model Post {
+  id        String    @id @default(uuid())
+  content   String
+  image     String?
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  String
+  likes     Like[]
+  comments  Comment[]
+  createdAt DateTime  @default(now())
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+
+  @@unique([postId, userId])
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+}
+
+model Story {
+  id        String      @id @default(uuid())
+  media     String
+  author    User        @relation(fields: [authorId], references: [id])
+  authorId  String
+  views     StoryView[]
+  likes     StoryLike[]
+  comments  StoryComment[]
+  createdAt DateTime    @default(now())
+  expiresAt DateTime
+}
+
+model StoryView {
+  id        String   @id @default(uuid())
+  story     Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  storyId   String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  viewedAt  DateTime @default(now())
+
+  @@unique([storyId, userId])
+}
+
+model StoryLike {
+  id        String   @id @default(uuid())
+  story     Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  storyId   String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+
+  @@unique([storyId, userId])
+}
+
+model StoryComment {
+  id        String   @id @default(uuid())
+  content   String
+  story     Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  storyId   String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+}
+
+model FriendRequest {
+  id         String   @id @default(uuid())
+  fromUser   User     @relation("SentRequests", fields: [fromUserId], references: [id])
+  fromUserId String
+  toUser     User     @relation("ReceivedRequests", fields: [toUserId], references: [id])
+  toUserId   String
+  status     String   @default("pending") // pending, accepted, rejected
+  createdAt  DateTime @default(now())
+}
+
+model Friendship {
+  id       String @id @default(uuid())
+  user     User   @relation("UserFriends", fields: [userId], references: [id])
+  userId   String
+  friend   User   @relation("FriendUsers", fields: [friendId], references: [id])
+  friendId String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, friendId])
+}
+
+model Message {
+  id         String   @id @default(uuid())
+  content    String
+  sender     User     @relation("SentMessages", fields: [senderId], references: [id])
+  senderId   String
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  receiverId String
+  isRead     Boolean  @default(false)
+  image      String?
+  createdAt  DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  type      String   // friend_request, request_accepted, new_message, post_like, post_comment
+  content   String
+  user      User     @relation("UserNotifications", fields: [userId], references: [id])
+  userId    String
+  sender    User?    @relation("NotificationSender", fields: [fromId], references: [id])
+  fromId    String?
+  targetId  String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+

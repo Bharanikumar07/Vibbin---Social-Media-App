@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Vibbin</title>
+    <meta name="description" content="View your profile on Vibbin">
+    <meta name="author" content="Managed and controlled by Bharani">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="vibbin-design-system.css">
+    <link rel="stylesheet" href="app-layout.css">
+    <link rel="stylesheet" href="profile-styles.css">
+</head>
+
+<body>
+    <!-- Mobile Header -->
+    <header class="mobile-header" id="mobile-header">
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="mobile-logo">
+            <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+                <circle cx="20" cy="20" r="18" fill="url(#logo-gradient-mobile)" />
+                <path d="M16 14L20 10L24 14M20 10V24M14 22L12 28H28L26 22" stroke="white" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                <defs>
+                    <linearGradient id="logo-gradient-mobile" x1="2" y1="2" x2="38" y2="38">
+                        <stop stop-color="#a78bfa" />
+                        <stop offset="0.5" stop-color="#ec4899" />
+                        <stop offset="1" stop-color="#3b82f6" />
+                    </linearGradient>
+                </defs>
+            </svg>
+            <span>Vibbin</span>
+        </div>
+        <button class="icon-btn">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                <path
+                    d="M10.833 9.16663H14.1663M5.83301 9.16663H5.84134M7.49967 9.16663H7.50801M10.833 6.66663V3.33329M10.833 16.6666V13.3333M13.3369 7.66296L15.6043 5.39563M5.39467 14.6043L7.662 12.337M7.662 7.66296L5.39467 5.39563M15.6043 14.6043L13.3369 12.337"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </button>
+    </header>
+
+    <div class="app-container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-content">
+                <div class="sidebar-logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <circle cx="20" cy="20" r="18" fill="url(#logo-gradient)" />
+                        <path d="M16 14L20 10L24 14M20 10V24M14 22L12 28H28L26 22" stroke="white" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <defs>
+                            <linearGradient id="logo-gradient" x1="2" y1="2" x2="38" y2="38">
+                                <stop stop-color="#a78bfa" />
+                                <stop offset="0.5" stop-color="#ec4899" />
+                                <stop offset="1" stop-color="#3b82f6" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="logo-text">Vibbin</span>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <a href="feed.html" class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <rect x="3" y="3" width="7" height="7" stroke-width="2" />
+                            <rect x="14" y="3" width="7" height="7" stroke-width="2" />
+                            <rect x="14" y="14" width="7" height="7" stroke-width="2" />
+                            <rect x="3" y="14" width="7" height="7" stroke-width="2" />
+                        </svg>
+                        <span>Feed</span>
+                    </a>
+                    <a href="messages.html" class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path
+                                d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z"
+                                stroke-width="2" />
+                        </svg>
+                        <span>Messages</span>
+                        <span class="badge badge-primary">3</span>
+                    </a>
+                    <a href="connections.html" class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path
+                                d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
+                                stroke-width="2" />
+                            <circle cx="9" cy="7" r="4" stroke-width="2" />
+                            <path
+                                d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13"
+                                stroke-width="2" />
+                            <path
+                                d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88"
+                                stroke-width="2" />
+                        </svg>
+                        <span>Connections</span>
+                    </a>
+                    <a href="discover.html" class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="11" cy="11" r="8" stroke-width="2" />
+                            <path d="M21 21L16.65 16.65" stroke-width="2" />
+                        </svg>
+                        <span>Discover</span>
+                    </a>
+                    <a href="profile.html" class="nav-item active">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path
+                                d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
+                                stroke-width="2" />
+                            <circle cx="12" cy="7" r="4" stroke-width="2" />
+                        </svg>
+                        <span>Profile</span>
+                    </a>
+                </nav>
+
+                <button class="btn btn-primary w-full" id="create-post-btn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                        <path d="M10 4V16M4 10H16" stroke-width="2.5" stroke-linecap="round" />
+                    </svg>
+                    <span>Create Post</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content profile-page">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="profile-cover">
+                    <img src="https://picsum.photos/seed/cover1/1200/300" alt="Cover photo" class="cover-image">
+                </div>
+
+                <div class="profile-info-section">
+                    <img src="https://i.pravatar.cc/120?img=60" alt="Your Name" class="profile-avatar">
+
+                    <div class="profile-details">
+                        <h1 class="profile-name">Alex Thompson</h1>
+                        <p class="profile-username">@alexthompson</p>
+                        <p class="profile-bio">Product Designer crafting delightful digital experiences | Coffee
+                            enthusiast ☕ | Based in SF 🌉</p>
+
+                        <div class="profile-stats">
+                            <div class="profile-stat">
+                                <strong data-stat="posts">247</strong>
+                                <span>Posts</span>
+                            </div>
+                            <div class="profile-stat">
+                                <strong data-stat="followers">1.2K</strong>
+                                <span>Followers</span>
+                            </div>
+                            <div class="profile-stat">
+                                <strong data-stat="following">892</strong>
+                                <span>Following</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-outline edit-profile-btn">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                            <path
+                                d="M14.1667 2.5C14.3856 2.28113 14.6454 2.10752 14.9314 1.98906C15.2173 1.87061 15.5238 1.80969 15.8334 1.80969C16.1429 1.80969 16.4494 1.87061 16.7353 1.98906C17.0213 2.10752 17.2811 2.28113 17.5 2.5C17.7189 2.71887 17.8925 2.97871 18.011 3.26466C18.1294 3.55061 18.1903 3.85706 18.1903 4.16667C18.1903 4.47627 18.1294 4.78272 18.011 5.06867C17.8925 5.35462 17.7189 5.61446 17.5 5.83333L6.25004 17.0833L1.66671 18.3333L2.91671 13.75L14.1667 2.5Z"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        Edit Profile
+                    </button>
+                </div>
+            </div>
+
+            <!-- Profile Tabs -->
+            <div class="profile-tabs">
+                <button class="profile-tab active" data-tab="posts">Posts</button>
+                <button class="profile-tab" data-tab="media">Media</button>
+                <button class="profile-tab" data-tab="about">About</button>
+            </div>
+
+            <!-- Profile Content -->
+            <div class="profile-content">
+                <!-- User's Posts (Same structure as feed posts) -->
+                <article class="post-card">
+                    <div class="post-header">
+                        <img src="https://i.pravatar.cc/48?img=60" alt="Alex Thompson" class="avatar">
+                        <div class="post-user-info">
+                            <h4 class="post-username">Alex Thompson</h4>
+                            <span class="post-time">3 hours ago</span>
+                        </div>
+                        <button class="icon-btn post-menu-btn">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <circle cx="10" cy="4" r="1.5" />
+                                <circle cx="10" cy="10" r="1.5" />
+                                <circle cx="10" cy="16" r="1.5" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="post-content">
+                        <p>Just wrapped up an amazing design sprint with the team! Really proud of what we've built
+                            together. Can't wait to share more soon! 🎨✨</p>
+                    </div>
+
+                    <div class="post-image">
+                        <img src="https://picsum.photos/seed/userpost1/800/600" alt="Design sprint">
+                    </div>
+
+                    <div class="post-actions">
+                        <button class="action-btn like-btn liked">
+                            <svg width="22" height="22" viewBox="0 0 22 22" fill="currentColor">
+                                <path
+                                    d="M11 19.5L2.75 11.25C1.25 9.75 1.25 7.25 2.75 5.75C4.25 4.25 6.75 4.25 8.25 5.75L11 8.5L13.75 5.75C15.25 4.25 17.75 4.25 19.25 5.75C20.75 7.25 20.75 9.75 19.25 11.25L11 19.5Z" />
+                            </svg>
+                            <span>142</span>
+                        </button>
+                        <button class="action-btn comment-btn">
+                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor">
+                                <path
+                                    d="M19 13C19 13.5304 18.7893 14.0391 18.4142 14.4142C18.0391 14.7893 17.5304 15 17 15H7L3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H17C17.5304 3 18.0391 3.21071 18.4142 3.58579C18.7893 3.96086 19 4.46957 19 5V13Z"
+                                    stroke-width="2" />
+                            </svg>
+                            <span>28</span>
+                        </button>
+                        <button class="action-btn share-btn">
+                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor">
+                                <circle cx="16" cy="5" r="3" stroke-width="2" />
+                                <circle cx="6" cy="11" r="3" stroke-width="2" />
+                                <circle cx="16" cy="17" r="3" stroke-width="2" />
+                                <path d="M8.5 12.5L13.5 15.5M13.5 6.5L8.5 9.5" stroke-width="2" />
+                            </svg>
+                            <span>Share</span>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Another Post -->
+                <article class="post-card">
+                    <div class="post-header">
+                        <img src="https://i.pravatar.cc/48?img=60" alt="Alex Thompson" class="avatar">
+                        <div class="post-user-info">
+                            <h4 class="post-username">Alex Thompson</h4>
+                            <span class="post-time">1 day ago</span>
+                        </div>
+                        <button class="icon-btn post-menu-btn">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                                <circle cx="10" cy="4" r="1.5" />
+                                <circle cx="10" cy="10" r="1.5" />
+                                <circle cx="10" cy="16" r="1.5" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="post-content">
+                        <p>Reminder: Great design isn't just about how it looks, but about how it works and makes people
+                            feel. Always design with empathy. 💜</p>
+                    </div>
+
+                    <div class="post-actions">
+                        <button class="action-btn like-btn">
+                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor">
+                                <path
+                                    d="M11 19.5L2.75 11.25C1.25 9.75 1.25 7.25 2.75 5.75C4.25 4.25 6.75 4.25 8.25 5.75L11 8.5L13.75 5.75C15.25 4.25 17.75 4.25 19.25 5.75C20.75 7.25 20.75 9.75 19.25 11.25L11 19.5Z"
+                                    stroke-width="2" />
+                            </svg>
+                            <span>387</span>
+                        </button>
+                        <button class="action-btn comment-btn">
+                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor">
+                                <path
+                                    d="M19 13C19 13.5304 18.7893 14.0391 18.4142 14.4142C18.0391 14.7893 17.5304 15 17 15H7L3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H17C17.5304 3 18.0391 3.21071 18.4142 3.58579C18.7893 3.96086 19 4.46957 19 5V13Z"
+                                    stroke-width="2" />
+                            </svg>
+                            <span>52</span>
+                        </button>
+                        <button class="action-btn share-btn">
+                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor">
+                                <circle cx="16" cy="5" r="3" stroke-width="2" />
+                                <circle cx="6" cy="11" r="3" stroke-width="2" />
+                                <circle cx="16" cy="17" r="3" stroke-width="2" />
+                                <path d="M8.5 12.5L13.5 15.5M13.5 6.5L8.5 9.5" stroke-width="2" />
+                            </svg>
+                            <span>Share</span>
+                        </button>
+                    </div>
+                </article>
+            </div>
+        </main>
+    </div>
+
+    <footer
+        style="text-align: center; padding: 2rem 1rem; color: var(--text-secondary, #64748b); font-size: 0.875rem; border-top: 1px solid var(--border, rgba(255, 255, 255, 0.1)); margin-top: 2rem;">
+        <p>© 2026 Vibbin - Also managed and controlled by Bharani</p>
+    </footer>
+
+    <!-- Real Authentication & Dynamic Data System -->
+    <script src="js/auth.js"></script>
+    <script src="js/posts.js"></script>
+    <script src="js/ui-dynamic.js"></script>
+    <script src="app-interactions.js"></script>
+</body>
+
+</html>

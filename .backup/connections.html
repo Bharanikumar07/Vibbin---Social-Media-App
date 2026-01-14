@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connections - Vibbin</title>
+    <meta name="description" content="Manage your connections on Vibbin">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="vibbin-design-system.css">
+    <link rel="stylesheet" href="app-layout.css">
+    <link rel="stylesheet" href="connections-styles.css">
+</head>
+
+<body>
+    <!-- Mobile Header -->
+    <header class="mobile-header" id="mobile-header">
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="mobile-logo">
+            <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+                <circle cx="20" cy="20" r="18" fill="url(#logo-gradient-mobile)" />
+                <path d="M16 14L20 10L24 14M20 10V24M14 22L12 28H28L26 22" stroke="white" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                <defs>
+                    <linearGradient id="logo-gradient-mobile" x1="2" y1="2" x2="38" y2="38">
+                        <stop stop-color="#a78bfa" />
+                        <stop offset="0.5" stop-color="#ec4899" />
+                        <stop offset="1" stop-color="#3b82f6" />
+                    </linearGradient>
+                </defs>
+            </svg>
+            <span>Vibbin</span>
+        </div>
+        <button class="icon-btn">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                <circle cx="9" cy="9" r="6" stroke-width="2" />
+                <path d="M13 13L17 17" stroke-width="2" stroke-linecap="round" />
+            </svg>
+        </button>
+    </header>
+
+    <div class="app-container">
+        <!-- Left Sidebar (same as before) -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-content">
+                <div class="sidebar-logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <circle cx="20" cy="20" r="18" fill="url(#logo-gradient)" />
+                        <path d="M16 14L20 10L24 14M20 10V24M14 22L12 28H28L26 22" stroke="white" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <defs>
+                            <linearGradient id="logo-gradient" x1="2" y1="2" x2="38" y2="38">
+                                <stop stop-color="#a78bfa" />
+                                <stop offset="0.5" stop-color="#ec4899" />
+                                <stop offset="1" stop-color="#3b82f6" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="logo-text">Vibbin</span>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <a href="feed.html" class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <rect x="3" y="3" width="7" height="7" stroke-width="2" />
+                            <rect x="14" y="3" width="7" height="7" stroke-width="2" />
+                            <rect x="14" y="14" width="7" height="7" stroke-width="2" />
+                            <rect x="3" y="14" width="7" height="7" stroke-width="2" />
+                        </svg>
+                        <span>Feed</span>
+                    </a>
+                    <a href="messages.html" class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path
+                                d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z"
+                                stroke-width="2" />
+                        </svg>
+                        <span>Messages</span>
+                        <span class="badge badge-primary">3</span>
+                    </a>
+                    <a href="connections.html" class="nav-item active">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path
+                                d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
+                                stroke-width="2" />
+                            <circle cx="9" cy="7" r="4" stroke-width="2" />
+                            <path
+                                d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13"
+                                stroke-width="2" />
+                            <path
+                                d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88"
+                                stroke-width="2" />
+                        </svg>
+                        <span>Connections</span>
+                    </a>
+                    <a href="discover.html" class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="11" cy="11" r="8" stroke-width="2" />
+                            <path d="M21 21L16.65 16.65" stroke-width="2" />
+                        </svg>
+                        <span>Discover</span>
+                    </a>
+                    <a href="profile.html" class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path
+                                d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
+                                stroke-width="2" />
+                            <circle cx="12" cy="7" r="4" stroke-width="2" />
+                        </svg>
+                        <span>Profile</span>
+                    </a>
+                </nav>
+
+                <button class="btn btn-primary w-full" id="create-post-btn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                        <path d="M10 4V16M4 10H16" stroke-width="2.5" stroke-linecap="round" />
+                    </svg>
+                    <span>Create Post</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content connections-page">
+            <div class="page-header">
+                <h1>Connections</h1>
+                <p class="page-subtitle">Manage and grow your network</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white">
+                            <path
+                                d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
+                                stroke-width="2" />
+                            <circle cx="9" cy="7" r="4" stroke-width="2" />
+                            <path
+                                d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13"
+                                stroke-width="2" />
+                            <path
+                                d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88"
+                                stroke-width="2" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number">1,245</h3>
+                        <p class="stat-label">Followers</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #ec4899 0%, #3b82f6 100%);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white">
+                            <path
+                                d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H6C4.93913 15 3.92172 15.4214 3.17157 16.1716C2.42143 16.9217 2 17.9391 2 19V21"
+                                stroke-width="2" />
+                            <circle cx="9" cy="7" r="4" stroke-width="2" />
+                            <path
+                                d="M22 21V19C21.9993 18.1137 21.7044 17.2528 21.1614 16.5523C20.6184 15.8519 19.8581 15.3516 19 15.13"
+                                stroke-width="2" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number">892</h3>
+                        <p class="stat-label">Following</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white">
+                            <circle cx="12" cy="12" r="10" stroke-width="2" />
+                            <path d="M12 6V12L16 14" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number">23</h3>
+                        <p class="stat-label">Pending</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white">
+                            <path
+                                d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
+                                stroke-width="2" />
+                            <circle cx="9" cy="7" r="4" stroke-width="2" />
+                            <circle cx="18" cy="9" r="3" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <h3 class="stat-number">567</h3>
+                        <p class="stat-label">Connections</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">All Connections</button>
+                <button class="filter-tab" data-filter="followers">Followers</button>
+                <button class="filter-tab" data-filter="following">Following</button>
+                <button class="filter-tab" data-filter="pending">Pending</button>
+            </div>
+
+            <!-- Connection Cards -->
+            <div class="connections-grid">
+                <!-- Connection Card 1 -->
+                <article class="connection-card">
+                    <img src="https://i.pravatar.cc/120?img=40" alt="Sarah Williams" class="avatar avatar-xl">
+                    <h3 class="connection-name">Sarah Williams</h3>
+                    <p class="connection-username">@sarahwilliams</p>
+                    <p class="connection-bio">Product Designer passionate about creating beautiful user experiences</p>
+                    <button class="btn btn-primary btn-sm w-full view-profile-btn">View Profile</button>
+                </article>
+
+                <!-- Connection Card 2 -->
+                <article class="connection-card">
+                    <img src="https://i.pravatar.cc/120?img=41" alt="James Rodriguez" class="avatar avatar-xl">
+                    <h3 class="connection-name">James Rodriguez</h3>
+                    <p class="connection-username">@jamesrod</p>
+                    <p class="connection-bio">Full-stack developer | Coffee enthusiast | Tech blogger</p>
+                    <button class="btn btn-primary btn-sm w-full view-profile-btn">View Profile</button>
+                </article>
+
+                <!-- Connection Card 3 -->
+                <article class="connection-card">
+                    <img src="https://i.pravatar.cc/120?img=42" alt="Emily Chen" class="avatar avatar-xl">
+                    <h3 class="connection-name">Emily Chen</h3>
+                    <p class="connection-username">@emilychen</p>
+                    <p class="connection-bio">Marketing strategist helping brands grow their online presence</p>
+                    <button class="btn btn-primary btn-sm w-full view-profile-btn">View Profile</button>
+                </article>
+
+                <!-- Connection Card 4 -->
+                <article class="connection-card">
+                    <img src="https://i.pravatar.cc/120?img=43" alt="Michael Anderson" class="avatar avatar-xl">
+                    <h3 class="connection-name">Michael Anderson</h3>
+                    <p class="connection-username">@mikea</p>
+                    <p class="connection-bio">UX researcher focused on accessibility and inclusive design</p>
+                    <button class="btn btn-primary btn-sm w-full view-profile-btn">View Profile</button>
+                </article>
+
+                <!-- Connection Card 5 -->
+                <article class="connection-card">
+                    <img src="https://i.pravatar.cc/120?img=44" alt="Jessica Taylor" class="avatar avatar-xl">
+                    <h3 class="connection-name">Jessica Taylor</h3>
+                    <p class="connection-username">@jesstaylor</p>
+                    <p class="connection-bio">Content creator sharing tips on productivity and wellness</p>
+                    <button class="btn btn-primary btn-sm w-full view-profile-btn">View Profile</button>
+                </article>
+
+                <!-- Connection Card 6 -->
+                <article class="connection-card">
+                    <img src="https://i.pravatar.cc/120?img=45" alt="Daniel Martinez" class="avatar avatar-xl">
+                    <h3 class="connection-name">Daniel Martinez</h3>
+                    <p class="connection-username">@danielm</p>
+                    <p class="connection-bio">Creative director with a passion for brand storytelling</p>
+                    <button class="btn btn-primary btn-sm w-full view-profile-btn">View Profile</button>
+                </article>
+            </div>
+        </main>
+    </div>
+
+    <script src="app-interactions.js"></script>
+</body>
+
+</html>

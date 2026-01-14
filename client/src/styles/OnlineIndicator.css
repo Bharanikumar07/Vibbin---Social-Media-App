@@ -1,0 +1,67 @@
+/* Online Indicator Styles */
+.online-indicator {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid var(--card-bg, #fff);
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+/* Online State - Green with Pulsing Glow */
+.online-indicator.online {
+    background: #10b981;
+    animation: pulse-glow 2s ease-in-out infinite;
+    box-shadow:
+        0 0 0 0 rgba(5, 150, 105, 0.6),
+        0 0 10px 3px rgba(5, 150, 105, 0.8),
+        0 0 16px 6px rgba(5, 150, 105, 0.5),
+        inset 0 0 4px rgba(255, 255, 255, 0.4);
+}
+
+/* Offline State - Gray, No Animation */
+.online-indicator.offline {
+    background: #9ca3af;
+    box-shadow: none;
+}
+
+/* Pulsing Glow Animation */
+@keyframes pulse-glow {
+
+    0%,
+    100% {
+        box-shadow:
+            0 0 0 0 rgba(5, 150, 105, 0.8),
+            0 0 10px 3px rgba(5, 150, 105, 0.9),
+            0 0 16px 6px rgba(5, 150, 105, 0.6),
+            inset 0 0 4px rgba(255, 255, 255, 0.4);
+    }
+
+    50% {
+        box-shadow:
+            0 0 0 4px rgba(5, 150, 105, 0.3),
+            0 0 14px 5px rgba(5, 150, 105, 1),
+            0 0 22px 8px rgba(5, 150, 105, 0.7),
+            inset 0 0 6px rgba(255, 255, 255, 0.6);
+    }
+}
+
+/* Last Seen Text */
+.last-seen-text {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-left: 8px;
+}
+
+/* Dark Mode Adjustments */
+@media (prefers-color-scheme: dark) {
+    .online-indicator {
+        border-color: var(--card-bg, #1f2937);
+    }
+}
+
+/* Responsive sizing for mobile */
+@media (max-width: 768px) {
+    .online-indicator {
+        border-width: 1.5px;
+    }
+}

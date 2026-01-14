@@ -1,0 +1,14 @@
+{
+  "name": "vibbin",
+  "version": "1.0.0",
+  "scripts": {
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "install:all": "cd client && npm install && cd ../server && npm install",
+    "prisma:push": "cd server && npx prisma db push && npx prisma generate",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\""
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

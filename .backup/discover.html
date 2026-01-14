@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover - Vibbin</title>
+    <meta name="description" content="Discover new people and connections on Vibbin">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="vibbin-design-system.css">
+    <link rel="stylesheet" href="app-layout.css">
+    <link rel="stylesheet" href="discover-styles.css">
+</head>
+
+<body>
+    <!-- Mobile Header -->
+    <header class="mobile-header" id="mobile-header">
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="mobile-logo">
+            <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+                <circle cx="20" cy="20" r="18" fill="url(#logo-gradient-mobile)" />
+                <path d="M16 14L20 10L24 14M20 10V24M14 22L12 28H28L26 22" stroke="white" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                <defs>
+                    <linearGradient id="logo-gradient-mobile" x1="2" y1="2" x2="38" y2="38">
+                        <stop stop-color="#a78bfa" />
+                        <stop offset="0.5" stop-color="#ec4899" />
+                        <stop offset="1" stop-color="#3b82f6" />
+                    </linearGradient>
+                </defs>
+            </svg>
+            <span>Vibbin</span>
+        </div>
+        <button class="icon-btn">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                <circle cx="9" cy="9" r="6" stroke-width="2" />
+                <path d="M13 13L17 17" stroke-width="2" stroke-linecap="round" />
+            </svg>
+        </button>
+    </header>
+
+    <div class="app-container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-content">
+                <div class="sidebar-logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <circle cx="20" cy="20" r="18" fill="url(#logo-gradient)" />
+                        <path d="M16 14L20 10L24 14M20 10V24M14 22L12 28H28L26 22" stroke="white" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <defs>
+                            <linearGradient id="logo-gradient" x1="2" y1="2" x2="38" y2="38">
+                                <stop stop-color="#a78bfa" />
+                                <stop offset="0.5" stop-color="#ec4899" />
+                                <stop offset="1" stop-color="#3b82f6" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="logo-text">Vibbin</span>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <a href="feed.html" class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <rect x="3" y="3" width="7" height="7" stroke-width="2" />
+                            <rect x="14" y="3" width="7" height="7" stroke-width="2" />
+                            <rect x="14" y="14" width="7" height="7" stroke-width="2" />
+                            <rect x="3" y="14" width="7" height="7" stroke-width="2" />
+                        </svg>
+                        <span>Feed</span>
+                    </a>
+                    <a href="messages.html" class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path
+                                d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z"
+                                stroke-width="2" />
+                        </svg>
+                        <span>Messages</span>
+                        <span class="badge badge-primary">3</span>
+                    </a>
+                    <a href="connections.html" class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path
+                                d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
+                                stroke-width="2" />
+                            <circle cx="9" cy="7" r="4" stroke-width="2" />
+                            <path
+                                d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13"
+                                stroke-width="2" />
+                            <path
+                                d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88"
+                                stroke-width="2" />
+                        </svg>
+                        <span>Connections</span>
+                    </a>
+                    <a href="discover.html" class="nav-item active">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="11" cy="11" r="8" stroke-width="2" />
+                            <path d="M21 21L16.65 16.65" stroke-width="2" />
+                        </svg>
+                        <span>Discover</span>
+                    </a>
+                    <a href="profile.html" class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path
+                                d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
+                                stroke-width="2" />
+                            <circle cx="12" cy="7" r="4" stroke-width="2" />
+                        </svg>
+                        <span>Profile</span>
+                    </a>
+                </nav>
+
+                <button class="btn btn-primary w-full" id="create-post-btn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                        <path d="M10 4V16M4 10H16" stroke-width="2.5" stroke-linecap="round" />
+                    </svg>
+                    <span>Create Post</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content discover-page">
+            <div class="page-header">
+                <h1>Discover People</h1>
+                <p class="page-subtitle">Find new connections and expand your network</p>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-container">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" class="search-icon">
+                    <circle cx="9" cy="9" r="6" stroke-width="2" />
+                    <path d="M13 13L17 17" stroke-width="2" stroke-linecap="round" />
+                </svg>
+                <input type="text" class="search-input" id="search-input"
+                    placeholder="Search by name, username, bio, or location...">
+            </div>
+
+            <!-- Discover Cards -->
+            <div class="discover-grid">
+                <!-- Discover Card 1 -->
+                <article class="discover-card">
+                    <img src="https://i.pravatar.cc/120?img=50" alt="Alexandra Kim" class="avatar avatar-xl">
+                    <h3 class="discover-name">Alexandra Kim</h3>
+                    <p class="discover-username">@alexkim</p>
+                    <p class="discover-bio">Creative director crafting beautiful brand experiences. Passionate about
+                        design and innovation.</p>
+                    <div class="discover-meta">
+                        <span class="discover-location">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                                <path
+                                    d="M8 14C8 14 12 10 12 6.5C12 4.01472 10.2091 2 8 2C5.79086 2 4 4.01472 4 6.5C4 10 8 14 8 14Z"
+                                    stroke-width="1.5" />
+                                <circle cx="8" cy="6.5" r="1.5" stroke-width="1.5" />
+                            </svg>
+                            San Francisco, CA
+                        </span>
+                        <span class="discover-followers">2.3K followers</span>
+                    </div>
+                    <button class="btn btn-primary btn-sm w-full follow-btn">Follow</button>
+                </article>
+
+                <!-- Discover Card 2 -->
+                <article class="discover-card">
+                    <img src="https://i.pravatar.cc/120?img=51" alt="Marcus Johnson" class="avatar avatar-xl">
+                    <h3 class="discover-name">Marcus Johnson</h3>
+                    <p class="discover-username">@marcusj</p>
+                    <p class="discover-bio">Tech entrepreneur sharing insights on startups, AI, and the future of work.
+                    </p>
+                    <div class="discover-meta">
+                        <span class="discover-location">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                                <path
+                                    d="M8 14C8 14 12 10 12 6.5C12 4.01472 10.2091 2 8 2C5.79086 2 4 4.01472 4 6.5C4 10 8 14 8 14Z"
+                                    stroke-width="1.5" />
+                                <circle cx="8" cy="6.5" r="1.5" stroke-width="1.5" />
+                            </svg>
+                            New York, NY
+                        </span>
+                        <span class="discover-followers">5.1K followers</span>
+                    </div>
+                    <button class="btn btn-primary btn-sm w-full follow-btn">Follow</button>
+                </article>
+
+                <!-- Discover Card 3 -->
+                <article class="discover-card">
+                    <img src="https://i.pravatar.cc/120?img=52" alt="Nina Patel" class="avatar avatar-xl">
+                    <h3 class="discover-name">Nina Patel</h3>
+                    <p class="discover-username">@ninapatel</p>
+                    <p class="discover-bio">Product manager helping teams build user-centric products that make a
+                        difference.</p>
+                    <div class="discover-meta">
+                        <span class="discover-location">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                                <path
+                                    d="M8 14C8 14 12 10 12 6.5C12 4.01472 10.2091 2 8 2C5.79086 2 4 4.01472 4 6.5C4 10 8 14 8 14Z"
+                                    stroke-width="1.5" />
+                                <circle cx="8" cy="6.5" r="1.5" stroke-width="1.5" />
+                            </svg>
+                            Seattle, WA
+                        </span>
+                        <span class="discover-followers">1.8K followers</span>
+                    </div>
+                    <button class="btn btn-primary btn-sm w-full follow-btn">Follow</button>
+                </article>
+
+                <!-- Discover Card 4 -->
+                <article class="discover-card">
+                    <img src="https://i.pravatar.cc/120?img=53" alt="Carlos Rodriguez" class="avatar avatar-xl">
+                    <h3 class="discover-name">Carlos Rodriguez</h3>
+                    <p class="discover-username">@carlosr</p>
+                    <p class="discover-bio">Full-stack developer and open source contributor. Love building tools that
+                        help developers.</p>
+                    <div class="discover-meta">
+                        <span class="discover-location">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                                <path
+                                    d="M8 14C8 14 12 10 12 6.5C12 4.01472 10.2091 2 8 2C5.79086 2 4 4.01472 4 6.5C4 10 8 14 8 14Z"
+                                    stroke-width="1.5" />
+                                <circle cx="8" cy="6.5" r="1.5" stroke-width="1.5" />
+                            </svg>
+                            Austin, TX
+                        </span>
+                        <span class="discover-followers">3.4K followers</span>
+                    </div>
+                    <button class="btn btn-primary btn-sm w-full follow-btn">Follow</button>
+                </article>
+
+                <!-- Discover Card 5 -->
+                <article class="discover-card">
+                    <img src="https://i.pravatar.cc/120?img=54" alt="Olivia Martinez" class="avatar avatar-xl">
+                    <h3 class="discover-name">Olivia Martinez</h3>
+                    <p class="discover-username">@oliviam</p>
+                    <p class="discover-bio">Marketing strategist | Content creator | Helping brands tell authentic
+                        stories.</p>
+                    <div class="discover-meta">
+                        <span class="discover-location">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                                <path
+                                    d="M8 14C8 14 12 10 12 6.5C12 4.01472 10.2091 2 8 2C5.79086 2 4 4.01472 4 6.5C4 10 8 14 8 14Z"
+                                    stroke-width="1.5" />
+                                <circle cx="8" cy="6.5" r="1.5" stroke-width="1.5" />
+                            </svg>
+                            Miami, FL
+                        </span>
+                        <span class="discover-followers">4.2K followers</span>
+                    </div>
+                    <button class="btn btn-primary btn-sm w-full follow-btn">Follow</button>
+                </article>
+
+                <!-- Discover Card 6 -->
+                <article class="discover-card">
+                    <img src="https://i.pravatar.cc/120?img=55" alt="Ethan Lee" class="avatar avatar-xl">
+                    <h3 class="discover-name">Ethan Lee</h3>
+                    <p class="discover-username">@ethanlee</p>
+                    <p class="discover-bio">Data scientist exploring the intersection of AI and healthcare to improve
+                        lives.</p>
+                    <div class="discover-meta">
+                        <span class="discover-location">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+                                <path
+                                    d="M8 14C8 14 12 10 12 6.5C12 4.01472 10.2091 2 8 2C5.79086 2 4 4.01472 4 6.5C4 10 8 14 8 14Z"
+                                    stroke-width="1.5" />
+                                <circle cx="8" cy="6.5" r="1.5" stroke-width="1.5" />
+                            </svg>
+                            Boston, MA
+                        </span>
+                        <span class="discover-followers">1.5K followers</span>
+                    </div>
+                    <button class="btn btn-primary btn-sm w-full follow-btn">Follow</button>
+                </article>
+            </div>
+        </main>
+    </div>
+
+    <script src="app-interactions.js"></script>
+</body>
+
+</html>

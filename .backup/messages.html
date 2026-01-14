@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Vibbin</title>
+    <meta name="description" content="Chat with your friends on Vibbin">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="vibbin-design-system.css">
+    <link rel="stylesheet" href="app-layout.css">
+    <link rel="stylesheet" href="messages-styles.css">
+</head>
+
+<body>
+    <!-- Mobile Header -->
+    <header class="mobile-header" id="mobile-header">
+        <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="mobile-logo">
+            <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+                <circle cx="20" cy="20" r="18" fill="url(#logo-gradient-mobile)" />
+                <path d="M16 14L20 10L24 14M20 10V24M14 22L12 28H28L26 22" stroke="white" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round" />
+                <defs>
+                    <linearGradient id="logo-gradient-mobile" x1="2" y1="2" x2="38" y2="38">
+                        <stop stop-color="#a78bfa" />
+                        <stop offset="0.5" stop-color="#ec4899" />
+                        <stop offset="1" stop-color="#3b82f6" />
+                    </linearGradient>
+                </defs>
+            </svg>
+            <span>Vibbin</span>
+        </div>
+        <button class="icon-btn" id="mobile-search-btn" aria-label="Search">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                <circle cx="9" cy="9" r="6" stroke-width="2" />
+                <path d="M13 13L17 17" stroke-width="2" stroke-linecap="round" />
+            </svg>
+        </button>
+    </header>
+
+    <!-- App Container -->
+    <div class="app-container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-content">
+                <div class="sidebar-logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <circle cx="20" cy="20" r="18" fill="url(#logo-gradient)" />
+                        <path d="M16 14L20 10L24 14M20 10V24M14 22L12 28H28L26 22" stroke="white" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <defs>
+                            <linearGradient id="logo-gradient" x1="2" y1="2" x2="38" y2="38">
+                                <stop stop-color="#a78bfa" />
+                                <stop offset="0.5" stop-color="#ec4899" />
+                                <stop offset="1" stop-color="#3b82f6" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="logo-text">Vibbin</span>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <a href="feed.html" class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <rect x="3" y="3" width="7" height="7" stroke-width="2" />
+                            <rect x="14" y="3" width="7" height="7" stroke-width="2" />
+                            <rect x="14" y="14" width="7" height="7" stroke-width="2" />
+                            <rect x="3" y="14" width="7" height="7" stroke-width="2" />
+                        </svg>
+                        <span>Feed</span>
+                    </a>
+                    <a href="messages.html" class="nav-item active">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path
+                                d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z"
+                                stroke-width="2" />
+                        </svg>
+                        <span>Messages</span>
+                        <span class="badge badge-primary">3</span>
+                    </a>
+                    <a href="connections.html" class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path
+                                d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21"
+                                stroke-width="2" />
+                            <circle cx="9" cy="7" r="4" stroke-width="2" />
+                            <path
+                                d="M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13"
+                                stroke-width="2" />
+                            <path
+                                d="M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88"
+                                stroke-width="2" />
+                        </svg>
+                        <span>Connections</span>
+                    </a>
+                    <a href="discover.html" class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="11" cy="11" r="8" stroke-width="2" />
+                            <path d="M21 21L16.65 16.65" stroke-width="2" />
+                        </svg>
+                        <span>Discover</span>
+                    </a>
+                    <a href="profile.html" class="nav-item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path
+                                d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
+                                stroke-width="2" />
+                            <circle cx="12" cy="7" r="4" stroke-width="2" />
+                        </svg>
+                        <span>Profile</span>
+                    </a>
+                </nav>
+
+                <button class="btn btn-primary w-full" id="create-post-btn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                        <path d="M10 4V16M4 10H16" stroke-width="2.5" stroke-linecap="round" />
+                    </svg>
+                    <span>Create Post</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content messages-page">
+            <div class="page-header">
+                <h1>Messages</h1>
+                <p class="page-subtitle">Chat with your connections</p>
+            </div>
+
+            <div class="messages-grid">
+                <!-- Message Card 1 -->
+                <article class="message-card">
+                    <img src="https://i.pravatar.cc/80?img=30" alt="David Johnson" class="avatar avatar-lg">
+                    <div class="message-card-content">
+                        <div class="message-card-header">
+                            <h3 class="message-card-name">David Johnson</h3>
+                            <span class="message-unread-indicator"></span>
+                        </div>
+                        <p class="message-card-bio">Product Designer • San Francisco</p>
+                        <p class="message-card-preview">Hey! Are you free this weekend? Would love to catch up...</p>
+                    </div>
+                    <div class="message-card-actions">
+                        <button class="icon-btn message-btn" title="Send Message" aria-label="Send message">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                                <path d="M18 2L9 11M18 2L12 18L9 11M18 2L2 8L9 11" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button class="icon-btn view-profile-btn" title="View Profile" aria-label="View profile">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                                <path
+                                    d="M10 12C12.2091 12 14 10.2091 14 8C14 5.79086 12.2091 4 10 4C7.79086 4 6 5.79086 6 8C6 10.2091 7.79086 12 10 12Z"
+                                    stroke-width="2" />
+                                <path d="M2 16C2 13.7909 6.47715 12 10 12C13.5228 12 18 13.7909 18 16"
+                                    stroke-width="2" />
+                            </svg>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Message Card 2 -->
+                <article class="message-card">
+                    <img src="https://i.pravatar.cc/80?img=31" alt="Sophie Turner" class="avatar avatar-lg">
+                    <div class="message-card-content">
+                        <h3 class="message-card-name">Sophie Turner</h3>
+                        <p class="message-card-bio">Marketing Manager • New York</p>
+                        <p class="message-card-preview">Thanks for the recommendation! I'll check it out 😊</p>
+                    </div>
+                    <div class="message-card-actions">
+                        <button class="icon-btn message-btn">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                                <path d="M18 2L9 11M18 2L12 18L9 11M18 2L2 8L9 11" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button class="icon-btn view-profile-btn">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                                <path
+                                    d="M10 12C12.2091 12 14 10.2091 14 8C14 5.79086 12.2091 4 10 4C7.79086 4 6 5.79086 6 8C6 10.2091 7.79086 12 10 12Z"
+                                    stroke-width="2" />
+                                <path d="M2 16C2 13.7909 6.47715 12 10 12C13.5228 12 18 13.7909 18 16"
+                                    stroke-width="2" />
+                            </svg>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Message Card 3 -->
+                <article class="message-card">
+                    <img src="https://i.pravatar.cc/80?img=32" alt="Ryan Miller" class="avatar avatar-lg">
+                    <div class="message-card-content">
+                        <div class="message-card-header">
+                            <h3 class="message-card-name">Ryan Miller</h3>
+                            <span class="message-unread-indicator"></span>
+                        </div>
+                        <p class="message-card-bio">Software Engineer • Seattle</p>
+                        <p class="message-card-preview">Let's catch up soon 👋</p>
+                    </div>
+                    <div class="message-card-actions">
+                        <button class="icon-btn message-btn">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                                <path d="M18 2L9 11M18 2L12 18L9 11M18 2L2 8L9 11" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button class="icon-btn view-profile-btn">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                                <path
+                                    d="M10 12C12.2091 12 14 10.2091 14 8C14 5.79086 12.2091 4 10 4C7.79086 4 6 5.79086 6 8C6 10.2091 7.79086 12 10 12Z"
+                                    stroke-width="2" />
+                                <path d="M2 16C2 13.7909 6.47715 12 10 12C13.5228 12 18 13.7909 18 16"
+                                    stroke-width="2" />
+                            </svg>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Message Card 4 -->
+                <article class="message-card">
+                    <img src="https://i.pravatar.cc/80?img=33" alt="Amanda Chen" class="avatar avatar-lg">
+                    <div class="message-card-content">
+                        <h3 class="message-card-name">Amanda Chen</h3>
+                        <p class="message-card-bio">UX Researcher • Austin</p>
+                        <p class="message-card-preview">That's awesome! Congratulations on the launch 🎉</p>
+                    </div>
+                    <div class="message-card-actions">
+                        <button class="icon-btn message-btn">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                                <path d="M18 2L9 11M18 2L12 18L9 11M18 2L2 8L9 11" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button class="icon-btn view-profile-btn">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                                <path
+                                    d="M10 12C12.2091 12 14 10.2091 14 8C14 5.79086 12.2091 4 10 4C7.79086 4 6 5.79086 6 8C6 10.2091 7.79086 12 10 12Z"
+                                    stroke-width="2" />
+                                <path d="M2 16C2 13.7909 6.47715 12 10 12C13.5228 12 18 13.7909 18 16"
+                                    stroke-width="2" />
+                            </svg>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Message Card 5 -->
+                <article class="message-card">
+                    <img src="https://i.pravatar.cc/80?img=34" alt="Marcus Lee" class="avatar avatar-lg">
+                    <div class="message-card-content">
+                        <h3 class="message-card-name">Marcus Lee</h3>
+                        <p class="message-card-bio">Creative Director • Los Angeles</p>
+                        <p class="message-card-preview">Great work on the project! Really impressive stuff</p>
+                    </div>
+                    <div class="message-card-actions">
+                        <button class="icon-btn message-btn">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                                <path d="M18 2L9 11M18 2L12 18L9 11M18 2L2 8L9 11" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button class="icon-btn view-profile-btn">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                                <path
+                                    d="M10 12C12.2091 12 14 10.2091 14 8C14 5.79086 12.2091 4 10 4C7.79086 4 6 5.79086 6 8C6 10.2091 7.79086 12 10 12Z"
+                                    stroke-width="2" />
+                                <path d="M2 16C2 13.7909 6.47715 12 10 12C13.5228 12 18 13.7909 18 16"
+                                    stroke-width="2" />
+                            </svg>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Message Card 6 -->
+                <article class="message-card">
+                    <img src="https://i.pravatar.cc/80?img=35" alt="Laura Kim" class="avatar avatar-lg">
+                    <div class="message-card-content">
+                        <h3 class="message-card-name">Laura Kim</h3>
+                        <p class="message-card-bio">Content Strategist • Chicago</p>
+                        <p class="message-card-preview">Would love to collaborate on this!</p>
+                    </div>
+                    <div class="message-card-actions">
+                        <button class="icon-btn message-btn">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                                <path d="M18 2L9 11M18 2L12 18L9 11M18 2L2 8L9 11" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button class="icon-btn view-profile-btn">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+                                <path
+                                    d="M10 12C12.2091 12 14 10.2091 14 8C14 5.79086 12.2091 4 10 4C7.79086 4 6 5.79086 6 8C6 10.2091 7.79086 12 10 12Z"
+                                    stroke-width="2" />
+                                <path d="M2 16C2 13.7909 6.47715 12 10 12C13.5228 12 18 13.7909 18 16"
+                                    stroke-width="2" />
+                            </svg>
+                        </button>
+                    </div>
+                </article>
+            </div>
+        </main>
+    </div>
+
+    <script src="app-interactions.js"></script>
+</body>
+
+</html>

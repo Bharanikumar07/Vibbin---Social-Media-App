@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Vibbin | Connect with Your Community</title>
+    <meta name="description"
+        content="Sign in to Vibbin and connect with friends, share moments, and discover new connections.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="vibbin-design-system.css">
+    <link rel="stylesheet" href="auth-styles.css">
+</head>
+
+<body>
+    <main class="auth-container">
+        <!-- Left Section: Marketing -->
+        <section class="auth-left">
+            <div class="auth-branding">
+                <!-- Logo -->
+                <div class="logo" id="vibbin-logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="20" cy="20" r="18" fill="url(#logo-gradient)" />
+                        <path d="M16 14L20 10L24 14M20 10V24M14 22L12 28H28L26 22" stroke="white" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <defs>
+                            <linearGradient id="logo-gradient" x1="2" y1="2" x2="38" y2="38"
+                                gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#a78bfa" />
+                                <stop offset="0.5" stop-color="#ec4899" />
+                                <stop offset="1" stop-color="#3b82f6" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="logo-text">Vibbin</span>
+                </div>
+
+                <!-- Social Proof -->
+                <div class="social-proof">
+                    <div class="avatar-stack">
+                        <img src="https://i.pravatar.cc/48?img=1" alt="User" class="avatar">
+                        <img src="https://i.pravatar.cc/48?img=2" alt="User" class="avatar">
+                        <img src="https://i.pravatar.cc/48?img=3" alt="User" class="avatar">
+                        <img src="https://i.pravatar.cc/48?img=4" alt="User" class="avatar">
+                        <img src="https://i.pravatar.cc/48?img=5" alt="User" class="avatar">
+                    </div>
+                    <div class="social-proof-content">
+                        <div class="rating-stars">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <p class="proof-text">Loved by 10K+ users worldwide</p>
+                    </div>
+                </div>
+
+                <!-- Hero Content -->
+                <div class="auth-hero">
+                    <h1 class="hero-headline">Connect with friends who vibe like you</h1>
+                    <p class="hero-description">Join Vibbin to share your moments, discover new connections, and be part
+                        of a vibrant community.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Section: Auth Form -->
+        <section class="auth-right">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2 class="auth-title">Welcome back</h2>
+                    <p class="auth-subtitle">Sign in to continue your journey</p>
+                </div>
+
+                <form class="auth-form" id="signin-form">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" id="email" name="email" class="input" placeholder="you@example.com" required
+                            autocomplete="email">
+                    </div>
+
+                    <div class="form-group">
+                        <div class="flex justify-between items-center">
+                            <label for="password" class="form-label">Password</label>
+                            <a href="#" class="text-sm forgot-link" id="forgot-password">Forgot password?</a>
+                        </div>
+                        <input type="password" id="password" name="password" class="input"
+                            placeholder="Enter your password" required autocomplete="current-password">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg w-full" id="signin-btn">
+                        <span>Sign In</span>
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                </form>
+
+                <div class="auth-divider">
+                    <span class="divider-text">or continue with</span>
+                </div>
+
+                <div class="social-auth">
+                    <button class="btn-social" id="google-signin">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path
+                                d="M18.1713 8.36788H17.5001V8.33329H10.0001V11.6666H14.7096C14.0225 13.6069 12.1763 15 10.0001 15C7.23882 15 5.00007 12.7612 5.00007 9.99996C5.00007 7.23871 7.23882 4.99996 10.0001 4.99996C11.2746 4.99996 12.4342 5.48079 13.3171 6.26621L15.6742 3.90913C14.1859 2.52204 12.1951 1.66663 10.0001 1.66663C5.39799 1.66663 1.66674 5.39788 1.66674 9.99996C1.66674 14.602 5.39799 18.3333 10.0001 18.3333C14.6022 18.3333 18.3334 14.602 18.3334 9.99996C18.3334 9.44121 18.2767 8.89579 18.1713 8.36788Z"
+                                fill="#FFC107" />
+                            <path
+                                d="M2.62757 6.12121L5.36549 8.12913C6.10632 6.29496 7.90049 4.99996 10.0005 4.99996C11.2751 4.99996 12.4347 5.48079 13.3176 6.26621L15.6747 3.90913C14.1863 2.52204 12.1955 1.66663 10.0005 1.66663C6.79924 1.66663 3.99091 3.47371 2.62757 6.12121Z"
+                                fill="#FF3D00" />
+                            <path
+                                d="M10.0001 18.3333C12.1526 18.3333 14.1101 17.5095 15.5876 16.1712L13.0084 13.9875C12.1439 14.6463 11.0801 15.0008 10.0001 15C7.8322 15 5.99178 13.6179 5.29845 11.6891L2.58095 13.783C3.9272 16.4816 6.76095 18.3333 10.0001 18.3333Z"
+                                fill="#4CAF50" />
+                            <path
+                                d="M18.1713 8.36796H17.5V8.33337H10V11.6667H14.7096C14.3809 12.5902 13.7889 13.3972 13.0067 13.9879L13.0079 13.9871L15.5871 16.1708C15.4046 16.3354 18.3333 14.1667 18.3333 10C18.3333 9.44129 18.2767 8.89587 18.1713 8.36796Z"
+                                fill="#1976D2" />
+                        </svg>
+                        <span>Google</span>
+                    </button>
+                    <button class="btn-social" id="apple-signin">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                            <path
+                                d="M14.3753 10.6909C14.3613 8.88279 15.877 7.99929 15.9473 7.95617C15.1343 6.80754 13.8822 6.64367 13.4278 6.62729C12.2903 6.51154 11.1903 7.32279 10.6128 7.32279C10.0247 7.32279 9.11034 6.63817 8.14534 6.65629C6.89959 6.67442 5.74134 7.40342 5.10822 8.53529C3.81409 10.8281 4.76797 14.2153 6.01584 16.0684C6.63972 16.9803 7.37622 17.9972 8.34009 17.9631C9.28397 17.9262 9.62972 17.3403 10.7561 17.3403C11.8736 17.3403 12.1966 17.9631 13.1791 17.9422C14.1895 17.9262 14.8295 17.0228 15.4328 16.1053C16.1478 15.0656 16.4345 14.0459 16.4485 13.9909C16.4261 13.9825 14.3922 13.1959 14.3753 10.6909Z" />
+                            <path
+                                d="M12.5469 5.37312C13.0553 4.74562 13.4053 3.89687 13.3128 3.04062C12.5875 3.07187 11.6953 3.53062 11.1703 4.14937C10.7011 4.69999 10.2817 5.57187 10.3869 6.40249C11.1964 6.46062 12.0281 6.00062 12.5469 5.37312Z" />
+                        </svg>
+                        <span>Apple</span>
+                    </button>
+                </div>
+
+                <p class="auth-footer-link">
+                    Don't have an account?
+                    <a href="auth-signup.html" class="font-semibold" id="signup-link">Sign up</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Form submission handler
+        document.getElementById('signin-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            // Redirect to feed page (in production, this would validate credentials)
+            window.location.href = 'feed.html';
+        });
+
+        // Social auth handlers
+        document.getElementById('google-signin').addEventListener('click', function () {
+            console.log('Google Sign In clicked');
+            // In production, implement OAuth flow
+        });
+
+        document.getElementById('apple-signin').addEventListener('click', function () {
+            console.log('Apple Sign In clicked');
+            // In production, implement OAuth flow
+        });
+
+        // Smooth hover animations
+        const logo = document.getElementById('vibbin-logo');
+        logo.addEventListener('mouseenter', function () {
+            this.style.transform = 'scale(1.05)';
+        });
+        logo.addEventListener('mouseleave', function () {
+            this.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+
+</html>
