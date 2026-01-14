@@ -5,6 +5,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { useSocket } from '../hooks/useSocket.ts';
 import { useOnlinePresence } from '../hooks/useOnlinePresence.ts';
 import OnlineIndicator from './OnlineIndicator.tsx';
+import { getImageUrl } from '../config';
 
 const RightSidebar = () => {
     const [conversations, setConversations] = useState<any[]>([]);
@@ -39,11 +40,7 @@ const RightSidebar = () => {
         }
     };
 
-    const getImageUrl = (path: string) => {
-        if (!path) return '';
-        if (path.startsWith('http')) return path;
-        return `http://localhost:5000${path}`;
-    };
+
 
     return (
         <aside className="right-sidebar" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>

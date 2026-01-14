@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import api from '../utils/api';
-import { Search, UserPlus, MessageSquare, Clock } from 'lucide-react';
+import { Search, UserPlus, Check, User, MessageSquare, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getImageUrl } from '../config';
+import { useAuth } from '../context/AuthContext';
 
 const DiscoverPage = () => {
     const [query, setQuery] = useState('');
@@ -39,11 +41,7 @@ const DiscoverPage = () => {
         }
     };
 
-    const getImageUrl = (path: string) => {
-        if (!path) return '';
-        if (path.startsWith('http')) return path;
-        return `http://localhost:5000${path}`;
-    };
+
 
     return (
         <div style={{ width: '100%', maxWidth: '1000px' }} className="page-enter">

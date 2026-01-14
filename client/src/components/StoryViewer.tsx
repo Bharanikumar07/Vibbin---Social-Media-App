@@ -4,6 +4,7 @@ import { formatDistanceToNow } from 'date-fns';
 import api from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import { useSocket } from '../hooks/useSocket';
+import { getImageUrl } from '../config';
 
 interface StoryViewerProps {
     stories: any[];
@@ -139,11 +140,7 @@ const StoryViewer = ({ stories, initialStoryIndex, onClose }: StoryViewerProps) 
         }
     };
 
-    const getImageUrl = (path: string) => {
-        if (!path) return '';
-        if (path.startsWith('http')) return path;
-        return `http://localhost:5000${path}`;
-    };
+
 
     const isLiked = (currentStory.likes || []).some((l: any) => l.userId === currentUser.id);
 

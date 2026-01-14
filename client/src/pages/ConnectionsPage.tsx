@@ -5,6 +5,7 @@ import { useOnlinePresence } from '../hooks/useOnlinePresence.ts';
 import OnlineIndicator from '../components/OnlineIndicator.tsx';
 import { Check, X, MessageSquare } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getImageUrl } from '../config';
 
 const ConnectionsPage = () => {
     const [activeTab, setActiveTab] = useState('connections');
@@ -49,11 +50,7 @@ const ConnectionsPage = () => {
         }
     };
 
-    const getImageUrl = (path: string) => {
-        if (!path) return '';
-        if (path.startsWith('http')) return path;
-        return `http://localhost:5000${path}`;
-    };
+
 
     const tabs = [
         { id: 'connections', label: 'Connections', count: friends.length },

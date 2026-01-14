@@ -6,6 +6,7 @@ import { useOnlinePresence } from '../hooks/useOnlinePresence.ts';
 import { useNotifications } from '../context/NotificationContext';
 import OnlineIndicator from './OnlineIndicator.tsx';
 import { useState } from 'react';
+import { getImageUrl } from '../config';
 import '../styles/Notifications.css';
 
 const Sidebar = () => {
@@ -60,11 +61,7 @@ const Sidebar = () => {
         { icon: <User size={22} />, label: 'Profile', path: `/profile/${user?.username}` },
     ];
 
-    const getImageUrl = (path: string) => {
-        if (!path) return '';
-        if (path.startsWith('http')) return path;
-        return `http://localhost:5000${path}`;
-    };
+
 
     return (
         <aside className="sidebar">

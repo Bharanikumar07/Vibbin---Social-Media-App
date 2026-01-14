@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { getImageUrl } from '../config';
 import api from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import { useOnlinePresence } from '../hooks/useOnlinePresence.ts';
@@ -163,11 +164,7 @@ const ProfilePage = () => {
         }
     };
 
-    const getImageUrl = (path: string) => {
-        if (!path) return '';
-        if (path.startsWith('http')) return path;
-        return `http://localhost:5000${path}`;
-    };
+
 
     if (loading) return <div style={{ padding: '100px', textAlign: 'center' }}>Loading...</div>;
     if (!profile) return <div style={{ padding: '100px', textAlign: 'center' }}>User not found</div>;

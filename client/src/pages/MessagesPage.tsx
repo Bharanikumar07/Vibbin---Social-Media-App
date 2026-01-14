@@ -7,6 +7,7 @@ import { useOnlinePresence } from '../hooks/useOnlinePresence.ts';
 import OnlineIndicator from '../components/OnlineIndicator.tsx';
 import { Send, Search, User, Image as ImageIcon, X } from 'lucide-react';
 import { formatDistanceToNow, format } from 'date-fns';
+import { getImageUrl } from '../config';
 
 const MessagesPage = () => {
     const { user } = useAuth();
@@ -164,11 +165,7 @@ const MessagesPage = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
 
-    const getImageUrl = (path: string) => {
-        if (!path) return '';
-        if (path.startsWith('http')) return path;
-        return `http://localhost:5000${path}`;
-    };
+
 
     if (loading) return <div style={{ padding: '100px', textAlign: 'center' }}>Loading...</div>;
 

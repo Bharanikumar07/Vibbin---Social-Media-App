@@ -2,6 +2,7 @@ import { useState } from 'react';
 import api from '../utils/api';
 import { formatDistanceToNow } from 'date-fns';
 import { Bell, UserPlus, Heart, MessageCircle, CheckCircle, MessageSquare, Check, X } from 'lucide-react';
+import { getImageUrl } from '../config';
 import { useNotifications } from '../context/NotificationContext';
 
 const NotificationsPage = () => {
@@ -78,12 +79,6 @@ const NotificationsPage = () => {
             case 'story_comment': return <MessageCircle size={20} color="#a855f7" />;
             default: return <Bell size={20} />;
         }
-    };
-
-    const getImageUrl = (path: string | null | undefined) => {
-        if (!path) return '';
-        if (path.startsWith('http')) return path;
-        return `http://localhost:5000${path}`;
     };
 
     return (
