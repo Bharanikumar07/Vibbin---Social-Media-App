@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
-import { Zap, ArrowRight, Moon, Sun } from 'lucide-react';
+import { ArrowRight, Moon, Sun } from 'lucide-react';
+import Logo from '../components/Logo';
 
 const SignupPage = () => {
     const [formData, setFormData] = useState({
@@ -67,9 +68,8 @@ const SignupPage = () => {
                     animation: 'fadeInUp 0.6s ease-out',
                     opacity: 1
                 }}>
-                    <div className="logo">
-                        <Zap fill="currentColor" size={28} />
-                        <span>vibbin</span>
+                    <div className="logo" style={{ marginBottom: '32px' }}>
+                        <Logo size={48} showTagline={true} />
                     </div>
 
                     <h1 className="hero-title" style={{

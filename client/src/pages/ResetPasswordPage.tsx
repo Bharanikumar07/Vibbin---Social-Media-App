@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import api from '../utils/api';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { Zap } from 'lucide-react';
+import Logo from '../components/Logo';
 
 const ResetPasswordPage = () => {
     const { token } = useParams();
@@ -37,9 +37,8 @@ const ResetPasswordPage = () => {
     return (
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'var(--bg)' }}>
             <div className="card" style={{ width: '100%', maxWidth: '400px', padding: '40px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '24px', color: 'var(--primary)' }}>
-                    <Zap fill="currentColor" size={32} />
-                    <span style={{ fontSize: '24px', fontWeight: '800' }}>vibbin</span>
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
+                    <Logo size={32} />
                 </div>
 
                 <h2 style={{ textAlign: 'center', marginBottom: '8px' }}>Reset Password</h2>

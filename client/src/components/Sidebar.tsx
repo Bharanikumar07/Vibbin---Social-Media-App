@@ -5,6 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useOnlinePresence } from '../hooks/useOnlinePresence.ts';
 import { useNotifications } from '../context/NotificationContext';
 import OnlineIndicator from './OnlineIndicator.tsx';
+import Logo from './Logo';
 import { useState } from 'react';
 import { getImageUrl } from '../config';
 import '../styles/Notifications.css';
@@ -65,17 +66,8 @@ const Sidebar = () => {
 
     return (
         <aside className="sidebar">
-            <div className="sidebar-logo" style={{ justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <div className="logo-icon-wrapper">
-                        {/* Using a simple div instead of Zap for now or keep Zap if preferred */}
-                        {/* Re-using Zap as Logo */}
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--primary)' }}>
-                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                        </svg>
-                    </div>
-                    <span>vibbin</span>
-                </div>
+            <div className="sidebar-logo" style={{ justifyContent: 'space-between', padding: '16px' }}>
+                <Logo size={32} />
                 <div style={{ display: 'flex', gap: '8px' }}>
                     <button onClick={toggleSound} style={{ color: 'var(--text-muted)' }} className="btn-ripple" title={soundEnabled ? 'Mute notifications' : 'Enable sound'}>
                         {soundEnabled ? <Volume2 size={20} /> : <VolumeX size={20} />}

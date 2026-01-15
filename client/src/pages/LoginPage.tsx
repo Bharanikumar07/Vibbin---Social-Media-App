@@ -3,7 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { GoogleLogin } from '@react-oauth/google';
-import { Zap, Star, ArrowRight, Moon, Sun } from 'lucide-react';
+import { Star, ArrowRight, Moon, Sun } from 'lucide-react';
+import Logo from '../components/Logo';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -75,9 +76,8 @@ const LoginPage = () => {
                     animation: 'fadeInUp 0.6s ease-out',
                     opacity: 1
                 }}>
-                    <div className="logo">
-                        <Zap fill="currentColor" size={28} />
-                        <span>vibbin</span>
+                    <div className="logo" style={{ marginBottom: '32px' }}>
+                        <Logo size={48} showTagline={true} />
                     </div>
 
                     <div className="testimonial" style={{
