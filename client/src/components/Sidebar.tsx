@@ -59,7 +59,7 @@ const Sidebar = () => {
             label: 'Notifications',
             path: '/notifications'
         },
-        { icon: <User size={22} />, label: 'Profile', path: `/profile/${user?.username}` },
+        { icon: <User size={22} />, label: 'Profile', path: `/profile/me` },
     ];
 
 

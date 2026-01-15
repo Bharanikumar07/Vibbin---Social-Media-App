@@ -1,7 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma';
 import { Server } from 'socket.io';
 
-const prisma = new PrismaClient();
 
 export type NotificationType = 'FRIEND_REQUEST' | 'FRIEND_ACCEPTED' | 'MESSAGE' | 'POST_LIKE' | 'COMMENT' | 'STORY_LIKE';
 

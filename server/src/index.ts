@@ -3,7 +3,6 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import { PrismaClient } from '@prisma/client';
 import authRoutes from './routes/auth';
 import postRoutes from './routes/posts';
 import storyRoutes from './routes/stories';
@@ -29,9 +28,7 @@ const io = new Server(httpServer, {
     },
 });
 
-const prisma = new PrismaClient({
-    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-});
+import prisma from './prisma';
 const PORT = process.env.PORT || 5000;
 
 // Middleware for Edge browser stability and security

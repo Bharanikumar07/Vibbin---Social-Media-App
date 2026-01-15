@@ -1,7 +1,6 @@
 import cron from 'node-cron';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma';
 
-const prisma = new PrismaClient();
 
 /**
  * Auto-delete posts and stories older than 24 hours

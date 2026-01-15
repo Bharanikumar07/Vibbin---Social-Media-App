@@ -1,11 +1,10 @@
 import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma';
 import { authenticateToken } from '../middleware/auth';
 import { upload, uploadToSupabase } from '../utils/upload';
 import { createNotification } from '../utils/notifications';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 // Get feed (my posts + friends' posts)
 router.get('/feed', authenticateToken, async (req: any, res, next) => {
@@ -157,7 +156,14 @@ router.post('/:postId/comment', authenticateToken, async (req: any, res, next) =
 router.get('/user/:username', authenticateToken, async (req: any, res, next) => {
     try {
         const { username } = req.params;
-        const user = await prisma.user.findUnique({ where: { username } });
+        const user = await prisma.user.findFirst({
+            where: {
+                username: {
+                    equals: username,
+                    mode: 'insensitive'
+                }
+            }
+        });
         if (!user) return res.status(404).json({ error: 'User not found' });
 
         const posts = await prisma.post.findMany({

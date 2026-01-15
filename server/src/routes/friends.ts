@@ -1,10 +1,9 @@
 import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma';
 import { authenticateToken } from '../middleware/auth';
 import { createNotification } from '../utils/notifications';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 // Search users
 router.get('/search', authenticateToken, async (req: any, res, next) => {
@@ -15,8 +14,8 @@ router.get('/search', authenticateToken, async (req: any, res, next) => {
         const users = await prisma.user.findMany({
             where: {
                 OR: [
-                    { username: { contains: String(q) } },
-                    { name: { contains: String(q) } }
+                    { username: { contains: String(q), mode: 'insensitive' } },
+                    { name: { contains: String(q), mode: 'insensitive' } }
                 ],
                 NOT: { id: currentUserId },
             },
@@ -55,11 +54,22 @@ router.get('/search', authenticateToken, async (req: any, res, next) => {
 // Get user profile by username
 router.get('/profile/:username', authenticateToken, async (req: any, res, next) => {
     try {
-        const { username } = req.params;
-        const userId = req.user.id;
+        let { username } = req.params;
+        const currentUserId = req.user.id;
 
-        const profile = await prisma.user.findUnique({
-            where: { username },
+        // NEW: Shortcut for "My Profile"
+        if (username === 'me') {
+            const meUser = await prisma.user.findUnique({ where: { id: currentUserId }, select: { username: true } });
+            if (meUser) username = meUser.username;
+        }
+
+        const profile = await prisma.user.findFirst({
+            where: {
+                username: {
+                    equals: username,
+                    mode: 'insensitive'
+                }
+            },
             select: {
                 id: true,
                 name: true,
@@ -81,14 +91,14 @@ router.get('/profile/:username', authenticateToken, async (req: any, res, next) 
 
         // Check relationship status
         const isFriend = await prisma.friendship.findFirst({
-            where: { userId, friendId: profile.id }
+            where: { userId: currentUserId, friendId: profile.id }
         });
 
         const pendingRequest = await prisma.friendRequest.findFirst({
             where: {
                 OR: [
-                    { fromUserId: userId, toUserId: profile.id, status: 'pending' },
-                    { fromUserId: profile.id, toUserId: userId, status: 'pending' }
+                    { fromUserId: currentUserId, toUserId: profile.id, status: 'pending' },
+                    { fromUserId: profile.id, toUserId: currentUserId, status: 'pending' }
                 ]
             }
         });
@@ -96,7 +106,7 @@ router.get('/profile/:username', authenticateToken, async (req: any, res, next) 
         res.json({
             ...profile,
             isFriend: !!isFriend,
-            requestStatus: pendingRequest ? (pendingRequest.fromUserId === userId ? 'sent' : 'received') : 'none',
+            requestStatus: pendingRequest ? (pendingRequest.fromUserId === currentUserId ? 'sent' : 'received') : 'none',
             requestId: pendingRequest?.id
         });
     } catch (error) {

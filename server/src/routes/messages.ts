@@ -1,11 +1,10 @@
 import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma';
 import { authenticateToken } from '../middleware/auth';
 import { upload, uploadToSupabase } from '../utils/upload';
 import { createNotification } from '../utils/notifications';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 // Get conversations list
 router.get('/conversations', authenticateToken, async (req: any, res, next) => {

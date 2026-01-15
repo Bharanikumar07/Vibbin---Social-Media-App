@@ -1,11 +1,10 @@
 import { Router } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma';
 import { authenticateToken } from '../middleware/auth';
 import { upload, uploadToSupabase } from '../utils/upload';
 import { createNotification } from '../utils/notifications';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 // Get stories from friends
 router.get('/', authenticateToken, async (req: any, res) => {

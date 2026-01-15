@@ -68,7 +68,7 @@ const MobileNav = () => {
             <NavLink to="/messages" style={({ isActive }) => ({ color: isActive ? 'var(--primary)' : 'var(--text-muted)' })}>
                 <MessageSquare size={24} />
             </NavLink>
-            <NavLink to={`/profile/${user?.username}`} style={({ isActive }) => ({ color: isActive ? 'var(--primary)' : 'var(--text-muted)' })}>
+            <NavLink to={`/profile/me`} style={({ isActive }) => ({ color: isActive ? 'var(--primary)' : 'var(--text-muted)' })}>
                 <User size={24} />
             </NavLink>
         </nav>

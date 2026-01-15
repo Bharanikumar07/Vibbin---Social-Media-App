@@ -1,19 +1,20 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma';
 import crypto from 'crypto';
 import { sendEmail } from '../utils/email';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 router.post('/signup', async (req, res, next) => {
     try {
         const { name, username, email, password } = req.body;
+        const normalizedEmail = email.toLowerCase().trim();
+        const normalizedUsername = username.toLowerCase().trim();
 
         const existingUser = await prisma.user.findFirst({
-            where: { OR: [{ email }, { username }] },
+            where: { OR: [{ email: normalizedEmail }, { username: normalizedUsername }] },
         });
 
         if (existingUser) {
@@ -25,8 +26,8 @@ router.post('/signup', async (req, res, next) => {
         const user = await prisma.user.create({
             data: {
                 name,
-                username,
-                email,
+                username: normalizedUsername,
+                email: normalizedEmail,
                 password: hashedPassword,
             },
         });
@@ -42,8 +43,15 @@ router.post('/signup', async (req, res, next) => {
 router.post('/login', async (req, res, next) => {
     try {
         const { email, password } = req.body;
-
-        const user = await prisma.user.findUnique({ where: { email } });
+        const normalizedEmail = email.toLowerCase().trim();
+        const user = await prisma.user.findFirst({
+            where: {
+                email: {
+                    equals: normalizedEmail,
+                    mode: 'insensitive'
+                }
+            }
+        });
         if (!user) return res.status(400).json({ error: 'User not found' });
 
         const validPassword = await bcrypt.compare(password, user.password);
@@ -71,15 +79,23 @@ router.post('/google', async (req, res, next) => {
         const payload = ticket.getPayload();
         if (!payload || !payload.email) return res.status(400).json({ error: 'Invalid Google token' });
 
-        let user = await prisma.user.findUnique({ where: { email: payload.email } });
+        const normalizedEmail = payload.email.toLowerCase().trim();
+        let user = await prisma.user.findFirst({
+            where: {
+                email: {
+                    equals: normalizedEmail,
+                    mode: 'insensitive'
+                }
+            }
+        });
 
         if (!user) {
             // Create user if not exists
             user = await prisma.user.create({
                 data: {
-                    email: payload.email,
+                    email: normalizedEmail,
                     name: payload.name || 'Google User',
-                    username: payload.email.split('@')[0] + Math.floor(Math.random() * 1000),
+                    username: normalizedEmail.split('@')[0] + Math.floor(Math.random() * 1000),
                     password: '', // No password for Google users
                     profilePicture: payload.picture,
                 },
@@ -137,7 +153,14 @@ router.put('/profile', authenticateToken, upload.single('profilePicture'), async
 router.post('/forgot-password', async (req, res, next) => {
     try {
         const { email } = req.body;
-        const user = await prisma.user.findUnique({ where: { email } });
+        const user = await prisma.user.findFirst({
+            where: {
+                email: {
+                    equals: email,
+                    mode: 'insensitive'
+                }
+            }
+        });
 
         if (!user) {
             // Do not reveal if user exists

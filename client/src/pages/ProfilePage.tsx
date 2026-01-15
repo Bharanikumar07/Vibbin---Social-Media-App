@@ -16,6 +16,7 @@ const ProfilePage = () => {
     const [profile, setProfile] = useState<any>(null);
     const [posts, setPosts] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editData, setEditData] = useState({ name: '', bio: '' });
     const [isSaving, setIsSaving] = useState(false);
@@ -52,14 +53,22 @@ const ProfilePage = () => {
     }, [username, currentUser]);
 
     const fetchProfile = async () => {
+        if (!username || username === 'undefined') {
+            setLoading(false);
+            setError('Invalid username');
+            return;
+        }
+
         try {
+            setError(null);
             const res = await api.get(`/friends/profile/${username}`);
             setProfile(res.data);
             if (res.data.id === currentUser?.id) {
                 setEditData({ name: res.data.name, bio: res.data.bio || '' });
             }
-        } catch (err) {
+        } catch (err: any) {
             console.error(err);
+            setError(err.response?.data?.error || 'Failed to load profile');
         } finally {
             setLoading(false);
         }
@@ -166,8 +175,22 @@ const ProfilePage = () => {
 
 
 
-    if (loading) return <div style={{ padding: '100px', textAlign: 'center' }}>Loading...</div>;
-    if (!profile) return <div style={{ padding: '100px', textAlign: 'center' }}>User not found</div>;
+    if (loading) return (
+        <div style={{ padding: '100px', textAlign: 'center', color: 'var(--text-main)' }}>
+            <div className="spinner" style={{ margin: '0 auto 20px', width: '40px', height: '40px', border: '4px solid var(--border)', borderTop: '4px solid var(--primary)', borderRadius: '50%' }}></div>
+            Loading profile...
+        </div>
+    );
+
+    if (error || !profile) return (
+        <div style={{ padding: '100px', textAlign: 'center', color: 'var(--text-main)' }}>
+            <h2 style={{ marginBottom: '16px' }}>{error || 'User not found'}</h2>
+            <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>
+                We couldn't find the user you're looking for.
+            </p>
+            <button onClick={() => navigate('/')} className="btn-primary">Back to Feed</button>
+        </div>
+    );
 
     const isOwnProfile = currentUser?.id === profile?.id;
 
