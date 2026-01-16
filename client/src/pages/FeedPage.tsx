@@ -63,7 +63,13 @@ const FeedPage = () => {
         if (socket) {
             const handleNewPost = (post: any) => {
                 setPosts((prev) => {
+                    // 1. Check if we already have this real post ID
                     if (prev.some(p => p.id === post.id)) return prev;
+
+                    // 2. Optimization: If this post looks like it came from us (same content and author),
+                    // but we have it as a 'temp' ID, we could replace it. 
+                    // However, we'll just allow the API response handler to do the replacement 
+                    // and let this check catch the literal duplicate.
                     return [post, ...prev];
                 });
             };
@@ -145,32 +151,71 @@ const FeedPage = () => {
 
     const handleCreatePost = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!content.trim() && !selectedImage) return;
+        const postContent = content.trim();
+        const postImage = selectedImage;
+        const postImagePrev = imagePreview;
+
+        if (!postContent && !postImage) return;
+
+        // Optimistic UI for Post
+        const optimisticId = 'temp-' + Date.now();
+        const optimisticPost = {
+            id: optimisticId,
+            content: postContent,
+            image: postImagePrev, // Local preview URL
+            author: currentUser,
+            createdAt: new Date().toISOString(),
+            likes: [],
+            comments: [],
+            isOptimistic: true
+        };
+
+        // 1. Clear input and show post immediately
+        setContent('');
+        setSelectedImage(null);
+        setImagePreview(null);
+        setPosts([optimisticPost, ...posts]);
 
         const formData = new FormData();
-        formData.append('content', content);
-        if (selectedImage) {
-            formData.append('image', selectedImage);
+        formData.append('content', postContent);
+        if (postImage) {
+            formData.append('image', postImage);
         }
 
         try {
             const res = await api.post('/posts', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
-            setPosts([res.data, ...posts]);
-            setContent('');
-            setSelectedImage(null);
-            setImagePreview(null);
+            // 2. Replace optimistic post with real one
+            setPosts((prev) => prev.map(p => p.id === optimisticId ? res.data : p));
         } catch (err) {
             console.error(err);
+            // Remove optimistic post on failure
+            setPosts((prev) => prev.filter(p => p.id !== optimisticId));
+            alert('Failed to create post. Please try again.');
         }
     };
 
     const handleCreateStory = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files || !e.target.files[0]) return;
 
-        setIsUploadingStory(true);
         const file = e.target.files[0];
+        const previewUrl = URL.createObjectURL(file);
+
+        // Optimistic UI for Story
+        const optimisticId = 'temp-story-' + Date.now();
+        const optimisticStory = {
+            id: optimisticId,
+            media: previewUrl,
+            author: currentUser,
+            createdAt: new Date().toISOString(),
+            views: [],
+            isOptimistic: true
+        };
+
+        setIsUploadingStory(true);
+        setStories([optimisticStory, ...stories]);
+
         const formData = new FormData();
         formData.append('media', file);
 
@@ -178,9 +223,11 @@ const FeedPage = () => {
             const res = await api.post('/stories', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
-            setStories([res.data, ...stories]);
+            // Replace optimistic story with real one
+            setStories((prev) => prev.map(s => s.id === optimisticId ? res.data : s));
         } catch (err) {
             console.error(err);
+            setStories((prev) => prev.filter(s => s.id !== optimisticId));
             alert('Failed to upload story');
         } finally {
             setIsUploadingStory(false);
