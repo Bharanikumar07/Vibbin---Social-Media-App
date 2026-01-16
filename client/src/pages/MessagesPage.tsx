@@ -45,7 +45,11 @@ const MessagesPage = () => {
         if (socket) {
             const handleMessage = (message: any) => {
                 if (selectedUser && (message.senderId === selectedUser.id || message.receiverId === selectedUser.id)) {
-                    setMessages((prev) => [...prev, message]);
+                    setMessages((prev) => {
+                        // Avoid duplicates if we already added it optimistically
+                        if (prev.find(m => m.id === message.id)) return prev;
+                        return [...prev, message];
+                    });
                     if (message.senderId === selectedUser.id) {
                         markAsRead(selectedUser.id);
                     }
@@ -113,25 +117,57 @@ const MessagesPage = () => {
 
     const handleSendMessage = async (e: React.FormEvent) => {
         e.preventDefault();
-        if ((!newMessage.trim() && !selectedImage) || !selectedUser) return;
+        const messageText = newMessage.trim();
+        const imageFile = selectedImage;
+        const imagePrev = imagePreview;
 
+        if ((!messageText && !imageFile) || !selectedUser) return;
+
+        // Optimistic UI: Create temporary message
+        const optimisticId = 'temp-' + Date.now();
+        const optimisticMessage = {
+            id: optimisticId,
+            content: messageText,
+            senderId: user.id,
+            receiverId: selectedUser.id,
+            createdAt: new Date().toISOString(),
+            isRead: false,
+            image: imagePrev, // Use local preview URL temporarily
+            isOptimistic: true // Flag to identify it's not from server yet
+        };
+
+        // 1. Clear input immediately
+        setNewMessage('');
+        setSelectedImage(null);
+        setImagePreview(null);
+        stopTyping();
+
+        // 2. Add to messages list immediately
+        setMessages((prev) => [...prev, optimisticMessage]);
+
+        // 3. Prepare FormData
         const formData = new FormData();
         formData.append('receiverId', selectedUser.id);
-        formData.append('content', newMessage);
-        if (selectedImage) {
-            formData.append('image', selectedImage);
+        formData.append('content', messageText);
+        if (imageFile) {
+            formData.append('image', imageFile);
         }
 
         try {
-            await api.post('/messages', formData, {
+            const res = await api.post('/messages', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
-            setNewMessage('');
-            setSelectedImage(null);
-            setImagePreview(null);
-            stopTyping();
+
+            // On success, replace the optimistic message with the real one from server
+            setMessages((prev) =>
+                prev.map(m => m.id === optimisticId ? res.data : m)
+            );
+            fetchConversations();
         } catch (err) {
             console.error(err);
+            // Optionally remove optimistic message or show error mark on it
+            setMessages((prev) => prev.filter(m => m.id !== optimisticId));
+            alert('Failed to send message. Please try again.');
         }
     };
 
