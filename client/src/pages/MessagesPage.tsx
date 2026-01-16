@@ -206,9 +206,9 @@ const MessagesPage = () => {
     if (loading) return <div style={{ padding: '100px', textAlign: 'center' }}>Loading...</div>;
 
     return (
-        <div className="page-enter" style={{ width: '100%', height: 'calc(100vh - 64px)', display: 'flex', background: 'var(--card-bg)', borderRadius: '24px', overflow: 'hidden', border: '1px solid var(--border)', alignSelf: 'stretch' }}>
+        <div className="messages-page-container">
             {/* Conversations List */}
-            <div style={{ width: '350px', borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column', background: 'var(--bg)' }}>
+            <div className={`conversations-sidebar ${selectedUser ? 'hidden-mobile' : ''}`}>
                 <div style={{ padding: '24px', borderBottom: '1px solid var(--border)', background: 'var(--card-bg)' }}>
                     <h1 style={{ fontSize: '24px', fontWeight: '800', marginBottom: '16px' }}>Messages</h1>
                     <div style={{ position: 'relative' }}>
@@ -269,12 +269,19 @@ const MessagesPage = () => {
             </div>
 
             {/* Chat Area */}
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: 'var(--card-bg)' }}>
+            <div className={`chat-area-container ${!selectedUser ? 'hidden-mobile' : ''}`}>
                 {selectedUser ? (
                     <>
                         {/* Chat Header (Matched to screenshot) */}
-                        <div style={{ padding: '12px 24px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'center', background: 'var(--card-bg)' }}>
-                            <div style={{ textAlign: 'center' }}>
+                        <div style={{ padding: '12px 24px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '16px', background: 'var(--card-bg)', position: 'relative' }}>
+                            <button
+                                onClick={() => setSelectedUser(null)}
+                                className="mobile-show"
+                                style={{ padding: '8px', marginLeft: '-8px' }}
+                            >
+                                <X size={20} />
+                            </button>
+                            <div style={{ flex: 1, textAlign: 'center' }}>
                                 <div className="avatar" style={{ width: '32px', height: '32px', margin: '0 auto 4px', overflow: 'visible', position: 'relative' }}>
                                     <div style={{ width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden' }}>
                                         <img src={getImageUrl(selectedUser.profilePicture) || `https://ui-avatars.com/api/?name=${selectedUser.name}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="" />

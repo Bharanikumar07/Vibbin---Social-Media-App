@@ -686,6 +686,71 @@ textarea {
   background: var(--primary-hover);
 }
 
+/* Messages Page Responsive Styles */
+.messages-page-container {
+  width: 100%;
+  height: calc(100vh - 64px);
+  display: flex;
+  background: var(--card-bg);
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  align-self: stretch;
+  animation: pageTransition 0.3s ease-out;
+}
+
+.conversations-sidebar {
+  width: 350px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.chat-area-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--card-bg);
+  min-width: 0;
+}
+
+.mobile-show {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .messages-page-container {
+    height: calc(100vh - 80px);
+    /* Adjust for mobile nav */
+    border-radius: 0;
+    border: none;
+  }
+
+  .conversations-sidebar {
+    width: 100%;
+    border-right: none;
+  }
+
+  .chat-area-container {
+    width: 100%;
+  }
+
+  .hidden-mobile {
+    display: none !important;
+  }
+
+  .mobile-show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .main-content {
+    padding: 0 !important;
+  }
+}
+
 @media (max-width: 1024px) {
   .sidebar {
     display: none;
