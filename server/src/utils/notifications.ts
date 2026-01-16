@@ -55,6 +55,7 @@ export const createNotification = async ({
             userId: notification.userId,
             type: notification.type,
             content: notification.content,
+            targetId: notification.targetId,
             read: notification.read,
             createdAt: notification.createdAt,
             sender: notification.sender

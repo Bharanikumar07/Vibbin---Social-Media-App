@@ -95,7 +95,12 @@ const ConnectionsPage = () => {
                     ))}
                 </div>
 
-                <div style={{ padding: '24px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                <div style={{
+                    padding: '24px',
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 350px), 1fr))',
+                    gap: '16px'
+                }}>
                     {activeTab === 'pending' ? (
                         requests.length > 0 ? (
                             requests.map(req => (
@@ -120,19 +125,19 @@ const ConnectionsPage = () => {
                                             <p style={{ color: 'var(--text-muted)', fontSize: '13px' }}>@{req.fromUser.username}</p>
                                         </div>
                                     </div>
-                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                    <div style={{ display: 'flex', gap: '10px' }}>
                                         <button
                                             onClick={() => handleRespondRequest(req.id, 'accepted')}
                                             className="btn-create-post"
-                                            style={{ width: '40px', height: '40px', margin: 0, padding: 0 }}
+                                            style={{ width: '44px', height: '44px', margin: 0, padding: 0, borderRadius: '12px' }}
                                         >
-                                            <Check size={18} />
+                                            <Check size={20} />
                                         </button>
                                         <button
                                             onClick={() => handleRespondRequest(req.id, 'rejected')}
-                                            style={{ width: '40px', height: '40px', borderRadius: '12px', border: '1px solid var(--border)', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--danger)', cursor: 'pointer' }}
+                                            style={{ width: '44px', height: '44px', borderRadius: '12px', border: '1px solid var(--border)', background: 'var(--card-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444', cursor: 'pointer' }}
                                         >
-                                            <X size={18} />
+                                            <X size={20} />
                                         </button>
                                     </div>
                                 </div>

@@ -24,7 +24,7 @@ const NotificationsPage = () => {
         } catch (err: any) {
             console.error('Error handling friend request:', err);
             // Check if it's a 404 (request already handled) or 500 (server error)
-            if (err.response?.status === 404) {
+            if (err.response?.status === 404 || err.response?.status === 400) {
                 // Request was already handled, just remove the notification
                 try {
                     await api.delete(`/notifications/${notifId}`);
@@ -44,13 +44,23 @@ const NotificationsPage = () => {
     const renderContent = (n: any) => {
         if (!n.sender) return n.content;
 
-        // If content already includes name, don't duplicate it in the bold part.
-        // Usually content is like "John Doe liked your post"
-        // We want: **John Doe** liked your post
-        const nameInContent = n.content.includes(n.sender.name);
-        const displayContent = nameInContent
-            ? n.content.replace(n.sender.name, '').trim()
-            : n.content;
+        // More robust name handling:
+        // Use a regex to replace the name ONLY if it's at the start or followed by space
+        const name = n.sender.name;
+        const escapedName = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const nameRegex = new RegExp(`^${escapedName}\\b`, 'i');
+
+        // Also check if content starts with username
+        const username = n.sender.username;
+        const escapedUsername = username.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const usernameRegex = new RegExp(`^${escapedUsername}\\b`, 'i');
+
+        let displayContent = n.content;
+        if (nameRegex.test(n.content)) {
+            displayContent = n.content.replace(nameRegex, '').trim();
+        } else if (usernameRegex.test(n.content)) {
+            displayContent = n.content.replace(usernameRegex, '').trim();
+        }
 
         return (
             <>
@@ -134,23 +144,35 @@ const NotificationsPage = () => {
                                     {renderContent(n)}
                                 </p>
 
-                                {(n.type === 'friend_request' || n.type === 'FRIEND_REQUEST') && n.targetId && (
-                                    <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
-                                        <button
-                                            onClick={(e) => { e.stopPropagation(); n.targetId && handleFriendRequest(n.id, n.targetId, 'accepted'); }}
-                                            disabled={actioningId === n.id}
-                                            className="btn-create-post"
-                                            style={{ margin: 0, padding: '8px 20px', fontSize: '14px', width: 'auto', height: 'auto' }}
-                                        >
-                                            <Check size={16} /> Accept
-                                        </button>
-                                        <button
-                                            onClick={(e) => { e.stopPropagation(); n.targetId && handleFriendRequest(n.id, n.targetId, 'rejected'); }}
-                                            disabled={actioningId === n.id}
-                                            style={{ padding: '8px 20px', borderRadius: '12px', border: '1px solid var(--border)', background: 'var(--card-bg)', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', cursor: 'pointer', fontWeight: '600' }}
-                                        >
-                                            <X size={16} /> Reject
-                                        </button>
+                                {(['FRIEND_REQUEST', 'friend_request'].includes(n.type?.trim())) && (
+                                    <div style={{ display: 'flex', gap: '10px', marginTop: '16px', flexWrap: 'wrap' }}>
+                                        {n.targetId ? (
+                                            <>
+                                                <button
+                                                    onClick={(e) => { e.stopPropagation(); n.targetId && handleFriendRequest(n.id, n.targetId, 'accepted'); }}
+                                                    disabled={actioningId === n.id}
+                                                    className="btn-create-post"
+                                                    style={{ margin: 0, padding: '8px 20px', fontSize: '14px', width: 'auto', height: 'auto' }}
+                                                >
+                                                    <Check size={16} /> Accept
+                                                </button>
+                                                <button
+                                                    onClick={(e) => { e.stopPropagation(); n.targetId && handleFriendRequest(n.id, n.targetId, 'rejected'); }}
+                                                    disabled={actioningId === n.id}
+                                                    style={{ padding: '8px 20px', borderRadius: '12px', border: '1px solid var(--border)', background: 'var(--card-bg)', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', cursor: 'pointer', fontWeight: '600' }}
+                                                >
+                                                    <X size={16} /> Reject
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); window.location.href = '/connections'; }}
+                                                className="btn-create-post"
+                                                style={{ margin: 0, padding: '8px 20px', fontSize: '14px', width: 'auto', height: 'auto' }}
+                                            >
+                                                View in Connections
+                                            </button>
+                                        )}
                                     </div>
                                 )}
                             </div>
