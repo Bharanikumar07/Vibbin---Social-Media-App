@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import LoginPage from './pages/LoginPage.tsx';
 import SignupPage from './pages/SignupPage.tsx';
+import LandingPage from './pages/LandingPage.tsx';
 import ForgotPasswordPage from './pages/ForgotPasswordPage.tsx';
 import ResetPasswordPage from './pages/ResetPasswordPage.tsx';
 import FeedPage from './pages/FeedPage.tsx';
@@ -18,7 +19,7 @@ import MobileNav from './components/MobileNav.tsx';
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { token, loading } = useAuth();
   if (loading) return <div>Loading...</div>;
-  if (!token) return <Navigate to="/login" />;
+  if (!token) return <Navigate to="/welcome" />;
   return <>{children}</>;
 };
 
@@ -34,6 +35,7 @@ const Layout = () => {
       {token && <Sidebar />}
       <main className={`main-content ${token ? 'padded-main' : ''}`} style={{ flexDirection: 'column' }}>
         <Routes>
+          <Route path="/welcome" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
