@@ -133,12 +133,14 @@ const AppContent = () => {
 };
 
 import { NotificationProvider } from './context/NotificationContext';
+import GlobalSplashScreen from './components/GlobalSplashScreen';
 
 function App() {
   return (
     <AuthProvider>
       <ThemeProvider>
         <NotificationProvider>
+          <GlobalSplashScreen />
           <AppContent />
         </NotificationProvider>
       </ThemeProvider>
