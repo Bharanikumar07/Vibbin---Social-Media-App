@@ -45,10 +45,11 @@ const GlobalSplashScreen = () => {
                 textAlign: 'center',
                 animation: 'scaleUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)'
             }}>
-                <Logo size={120} showText={true} showTagline={false} />
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '40px' }}>
+                    <Logo size={120} showText={true} showTagline={false} />
+                </div>
 
                 <div style={{
-                    marginTop: '40px',
                     animation: 'fadeInUp 0.6s ease-out 0.4s both'
                 }}>
                     <h1 style={{
