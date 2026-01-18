@@ -1,14 +1,54 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vibbin | Connect & Share</title>
-    <meta name="description" content="Vibbin - The real-time social media application for connecting with friends and sharing your vibes." />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Search Console Verification -->
+  <meta name="google-site-verification" content="YOUR_GSC_VERIFICATION_CODE" />
+
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'YOUR_GTM_ID');</script>
+  <!-- End Google Tag Manager -->
+
+  <!-- Google Analytics (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA4_ID"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'YOUR_GA4_ID');
+  </script>
+  <!-- End Google Analytics -->
+
+  <title>Vibbin | Connect & Share</title>
+
+  <meta name="description"
+    content="Vibbin - The real-time social media application for connecting with friends and sharing your vibes." />
+  <meta name="keywords" content="social media, vibbin, connect, share, real-time chat, friends" />
+  <meta property="og:title" content="Vibbin | Connect & Share" />
+  <meta property="og:description" content="Connect with friends and share your vibes in real-time." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://vibbin.vercel.app/" />
+</head>
+
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/webmaster/noscript.html?id=YOUR_GTM_ID" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>
