@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://vibbin.vercel.app/sitemap.xml
+Sitemap: https://vibbin-social-media-app.vercel.app/sitemap.xml
