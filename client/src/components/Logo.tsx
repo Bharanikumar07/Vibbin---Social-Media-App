@@ -72,7 +72,7 @@ const Logo: React.FC<LogoProps> = ({
                             paddingLeft: '4px',
                             fontStyle: 'italic'
                         }}>
-                            Vibbin
+                            Vibebin
                         </span>
 
                         {showTagline && (

@@ -1,8 +1,8 @@
-# 🚀 QUICK START GUIDE - Vibbin
+# 🚀 QUICK START GUIDE - Vibebin
 
 ## ✅ Everything is Ready!
 
-Your Vibbin social networking app is fully functional with all features working perfectly!
+Your Vibebin social networking app is fully functional with all features working perfectly!
 
 ---
 

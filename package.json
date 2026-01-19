@@ -1,5 +1,5 @@
 {
-  "name": "vibbin",
+  "name": "vibebin",
   "version": "1.0.0",
   "scripts": {
     "dev:server": "cd server && npm run dev",
@@ -9,6 +9,7 @@
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\""
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.59.4",
     "concurrently": "^8.2.2"
   }
 }

@@ -150,7 +150,7 @@ const startServer = async () => {
         console.log('✅ User presence synchronized.');
 
         httpServer.listen(PORT, () => {
-            console.log(`📡 Vibbin Backend active on port ${PORT} `);
+            console.log(`📡 Vibebin Backend active on port ${PORT} `);
             startCleanupJobs();
         });
     } catch (error) {

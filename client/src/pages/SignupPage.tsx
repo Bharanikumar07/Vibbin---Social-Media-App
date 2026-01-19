@@ -82,7 +82,7 @@ const SignupPage = () => {
                     <p className="hero-subtitle" style={{
                         animation: 'fadeInUp 0.8s ease-out'
                     }}>
-                        Create an account to start vibbin with your friends.
+                        Create an account to start vibebin with your friends.
                     </p>
                 </div>
 
@@ -126,7 +126,7 @@ const SignupPage = () => {
                                 type="email"
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                placeholder="bharan@vibbin.com"
+                                placeholder="bharan@vibebin.com"
                                 required
                             />
 

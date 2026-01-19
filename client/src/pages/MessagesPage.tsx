@@ -46,8 +46,20 @@ const MessagesPage = () => {
             const handleMessage = (message: any) => {
                 if (selectedUser && (message.senderId === selectedUser.id || message.receiverId === selectedUser.id)) {
                     setMessages((prev) => {
-                        // Avoid duplicates if we already added it optimistically
+                        // 1. If we already have this real ID, ignore.
                         if (prev.find(m => m.id === message.id)) return prev;
+
+                        // 2. If it's our own message, check for a matching optimistic entry by tempId
+                        if (message.tempId) {
+                            const optimisticIndex = prev.findIndex(m => m.id === message.tempId);
+                            if (optimisticIndex !== -1) {
+                                // Replace optimistic message with the real one
+                                const newMessages = [...prev];
+                                newMessages[optimisticIndex] = message;
+                                return newMessages;
+                            }
+                        }
+
                         return [...prev, message];
                     });
                     if (message.senderId === selectedUser.id) {
@@ -152,6 +164,7 @@ const MessagesPage = () => {
         if (imageFile) {
             formData.append('image', imageFile);
         }
+        formData.append('tempId', optimisticId);
 
         try {
             const res = await api.post('/messages', formData, {
@@ -159,9 +172,14 @@ const MessagesPage = () => {
             });
 
             // On success, replace the optimistic message with the real one from server
-            setMessages((prev) =>
-                prev.map(m => m.id === optimisticId ? res.data : m)
-            );
+            setMessages((prev) => {
+                // If the socket already added/replaced it, the optimisticId will be gone
+                // or the real ID will already be in the list.
+                if (prev.find(m => m.id === res.data.id)) {
+                    return prev.filter(m => m.id !== optimisticId);
+                }
+                return prev.map(m => m.id === optimisticId ? res.data : m);
+            });
             fetchConversations();
         } catch (err) {
             console.error(err);

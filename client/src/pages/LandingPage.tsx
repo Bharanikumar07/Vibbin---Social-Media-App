@@ -142,7 +142,7 @@ const LandingPage = () => {
                         width: 'auto'
                     }}
                 >
-                    Continue to Vibbin
+                    Continue to Vibebin
                     <ArrowRight size={22} style={{ marginLeft: '12px' }} />
                 </button>
             </div>

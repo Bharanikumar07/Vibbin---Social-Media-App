@@ -180,7 +180,7 @@ router.post('/forgot-password', async (req, res, next) => {
         });
 
         const resetLink = `http://localhost:5173/reset-password/${token}`;
-        const emailResult = await sendEmail(email, 'Password Reset - Vibbin', `Hi ${user.name},\n\nPlease click the link below to reset your password:\n${resetLink}\n\nThis link expires in 15 minutes.\n\nIf you did not request this, please ignore this email.`);
+        const emailResult = await sendEmail(email, 'Password Reset - Vibebin', `Hi ${user.name},\n\nPlease click the link below to reset your password:\n${resetLink}\n\nThis link expires in 15 minutes.\n\nIf you did not request this, please ignore this email.`);
 
         if (emailResult?.mock) {
             return res.json({ message: 'Development Mode: Check console or use this link.', link: resetLink });

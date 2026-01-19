@@ -1,4 +1,4 @@
-# Vibbin - Technology Stack Documentation
+# Vibebin - Technology Stack Documentation
 
 > **A modern, real-time social networking platform**  
 > Built with cutting-edge technologies for seamless user experience
@@ -22,7 +22,7 @@
 
 ## 🎯 Overview
 
-**Vibbin** is a full-stack social networking application that enables users to connect, share posts, send messages, and build meaningful relationships. The application is built with a modern tech stack emphasizing real-time capabilities, security, and user experience.
+**Vibebin** is a full-stack social networking application that enables users to connect, share posts, send messages, and build meaningful relationships. The application is built with a modern tech stack emphasizing real-time capabilities, security, and user experience.
 
 ### Key Characteristics
 - **Real-time** messaging and notifications
@@ -290,7 +290,7 @@ server/src/uploads/
 ### Project Structure
 
 ```
-vibbin/
+vibebin/
 ├── client/                 # Frontend React application
 │   ├── src/
 │   │   ├── components/    # Reusable UI components
@@ -431,7 +431,7 @@ VITE_GOOGLE_CLIENT_ID=your_google_client_id
 
 #### Server (.env)
 ```env
-DATABASE_URL=postgresql://user:password@localhost:5432/vibbin
+DATABASE_URL=postgresql://user:password@localhost:5432/vibebin
 JWT_SECRET=your_secret_key
 PORT=5000
 GOOGLE_CLIENT_ID=your_google_client_id

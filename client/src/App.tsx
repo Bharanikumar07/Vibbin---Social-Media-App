@@ -110,7 +110,7 @@ const Layout = () => {
               }}></div>
 
               <p style={{ fontSize: '13px', color: 'var(--text-muted)', letterSpacing: '0.01em' }}>
-                &copy; {new Date().getFullYear()} <span style={{ fontWeight: '700', color: 'var(--text-main)' }}>Vibbin</span>.
+                &copy; {new Date().getFullYear()} <span style={{ fontWeight: '700', color: 'var(--text-main)' }}>Vibebin</span>.
                 All rights reserved. Registered trademark of Bharanikumar G.V.
               </p>
             </div>

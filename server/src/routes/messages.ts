@@ -90,7 +90,7 @@ router.get('/:userId', authenticateToken, async (req: any, res, next) => {
 // Send a message
 router.post('/', authenticateToken, upload.single('image'), async (req: any, res, next) => {
     try {
-        const { receiverId, content } = req.body;
+        const { receiverId, content, tempId } = req.body;
         const senderId = req.user.id;
 
         // Check if friends
@@ -116,9 +116,11 @@ router.post('/', authenticateToken, upload.single('image'), async (req: any, res
             },
         });
 
+        const responseData = { ...message, tempId };
+
         // Emit via socket.io
-        req.io.to(receiverId).emit('newMessage', message);
-        req.io.to(senderId).emit('newMessage', message);
+        req.io.to(receiverId).emit('newMessage', responseData);
+        req.io.to(senderId).emit('newMessage', responseData);
 
         // Send real-time notification
         await createNotification({
@@ -130,7 +132,7 @@ router.post('/', authenticateToken, upload.single('image'), async (req: any, res
             io: req.io
         });
 
-        res.status(201).json(message);
+        res.status(201).json(responseData);
     } catch (error) {
         next(error);
     }

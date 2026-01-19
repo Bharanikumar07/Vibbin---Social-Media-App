@@ -16,11 +16,11 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<any>(null);
-    const [token, setToken] = useState<string | null>(localStorage.getItem('vibbin_token'));
+    const [token, setToken] = useState<string | null>(localStorage.getItem('vibebin_token'));
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('vibbin_user');
+        const storedUser = localStorage.getItem('vibebin_user');
         if (storedUser && token) {
             setUser(JSON.parse(storedUser));
         }
@@ -30,8 +30,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const login = async (email: string, password: string) => {
         const res = await api.post('/auth/login', { email, password });
         const { token, user } = res.data;
-        localStorage.setItem('vibbin_token', token);
-        localStorage.setItem('vibbin_user', JSON.stringify(user));
+        localStorage.setItem('vibebin_token', token);
+        localStorage.setItem('vibebin_user', JSON.stringify(user));
         setToken(token);
         setUser(user);
     };
@@ -39,8 +39,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const signup = async (data: any) => {
         const res = await api.post('/auth/signup', data);
         const { token, user } = res.data;
-        localStorage.setItem('vibbin_token', token);
-        localStorage.setItem('vibbin_user', JSON.stringify(user));
+        localStorage.setItem('vibebin_token', token);
+        localStorage.setItem('vibebin_user', JSON.stringify(user));
         setToken(token);
         setUser(user);
     };
@@ -48,21 +48,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const googleLogin = async (idToken: string) => {
         const res = await api.post('/auth/google', { idToken });
         const { token, user } = res.data;
-        localStorage.setItem('vibbin_token', token);
-        localStorage.setItem('vibbin_user', JSON.stringify(user));
+        localStorage.setItem('vibebin_token', token);
+        localStorage.setItem('vibebin_user', JSON.stringify(user));
         setToken(token);
         setUser(user);
     };
 
     const logout = () => {
-        localStorage.removeItem('vibbin_token');
-        localStorage.removeItem('vibbin_user');
+        localStorage.removeItem('vibebin_token');
+        localStorage.removeItem('vibebin_user');
         setToken(null);
         setUser(null);
     };
 
     const updateUser = (updatedUser: any) => {
-        localStorage.setItem('vibbin_user', JSON.stringify(updatedUser));
+        localStorage.setItem('vibebin_user', JSON.stringify(updatedUser));
         setUser(updatedUser);
     };
 

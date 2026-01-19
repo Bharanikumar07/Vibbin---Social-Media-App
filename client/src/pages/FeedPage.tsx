@@ -344,7 +344,7 @@ const FeedPage = () => {
                                 <textarea
                                     value={content}
                                     onChange={(e) => setContent(e.target.value)}
-                                    placeholder="What's vibbin today?"
+                                    placeholder="What's vibebin today?"
                                     style={{ width: '100%', border: 'none', resize: 'none', height: '80px', fontSize: '15px', padding: '8px 0', outline: 'none' }}
                                 />
                                 {imagePreview && (

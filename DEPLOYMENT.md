@@ -1,4 +1,4 @@
-# Vibbin Deployment Guide
+# Vibebin Deployment Guide
 
 ## ⚠️ Important Architecture Note
 The **Server** uses `socket.io` for real-time features. This means it **cannot** be deployed to standard Serverless platforms (like Vercel functions, AWS Lambda, or Netlify functions) because they do not support persistent WebSocket connections.
@@ -56,4 +56,4 @@ Render is recommended as it has a generous free tier that supports WebSockets.
 2.  You need to update strict CORS policy if enabled.
 3.  In `server/src/index.ts`, ensure `cors` allows your Vercel domain. Currently, it is set to `origin: '*'` which allows everything (easiest for testing but less secure). For production, you might want to restrict it later.
 
-**Done!** Your Vibbin app is now live with real-time features.
+**Done!** Your Vibebin app is now live with real-time features.

@@ -109,7 +109,7 @@ const LoginPage = () => {
                     <p className="hero-subtitle" style={{
                         animation: 'fadeInUp 0.9s ease-out'
                     }}>
-                        connect with global community on vibbin.
+                        connect with global community on vibebin.
                     </p>
                 </div>
 
