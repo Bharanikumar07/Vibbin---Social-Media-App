@@ -60,38 +60,45 @@ export const useWebRTC = ({
         const pc = new RTCPeerConnection(ICE_SERVERS);
 
         pc.onicecandidate = (event) => {
-            if (event.candidate && socketRef.current && targetUserIdRef.current) {
-                // console.log('🧊 WebRTC: Local ICE candidate generated');
-                socketRef.current.emit('ice-candidate', {
-                    targetUserId: targetUserIdRef.current,
-                    candidate: event.candidate.toJSON()
-                });
+            if (event.candidate) {
+                console.log('🧊 WebRTC candidate (local):', event.candidate.candidate);
+                if (socketRef.current && targetUserIdRef.current) {
+                    socketRef.current.emit('ice-candidate', {
+                        targetUserId: targetUserIdRef.current,
+                        candidate: event.candidate.toJSON()
+                    });
+                }
+            } else {
+                console.log('🧊 WebRTC: ICE gathering complete');
             }
         };
 
         pc.ontrack = (event) => {
-            console.log('🎥 WebRTC: Remote track received:', event.streams.length, 'streams');
+            console.log('🎥 WebRTC remote tracks:', event.streams.length, 'streams');
             if (event.streams && event.streams[0]) {
-                console.log('🎥 WebRTC: Remote stream ID:', event.streams[0].id);
+                console.log('🎥 WebRTC remote stream ID:', event.streams[0].id);
                 onRemoteStream(event.streams[0]);
             }
         };
 
         pc.onconnectionstatechange = () => {
-            console.log('📡 WebRTC: Connection state change:', pc.connectionState);
+            console.log('📡 WebRTC connection state:', pc.connectionState);
             onConnectionStateChange(pc.connectionState);
         };
 
         pc.oniceconnectionstatechange = () => {
-            console.log('🧊 WebRTC: ICE connection state change:', pc.iceConnectionState);
+            console.log('🧊 WebRTC ICE state:', pc.iceConnectionState);
+            if (pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed') {
+                console.log('✅ WebRTC: Peer connection fully established!');
+            }
         };
 
         pc.onicegatheringstatechange = () => {
-            console.log('🧊 WebRTC: ICE gathering state:', pc.iceGatheringState);
+            console.log('🧊 WebRTC ICE gathering state:', pc.iceGatheringState);
         };
 
         pc.onsignalingstatechange = () => {
-            console.log('📶 WebRTC: Signaling state change:', pc.signalingState);
+            console.log('📶 WebRTC signaling state:', pc.signalingState);
         };
 
         peerConnectionRef.current = pc;
@@ -204,16 +211,17 @@ export const useWebRTC = ({
     // Handle incoming ICE candidate
     const handleIceCandidate = useCallback(async (candidate: RTCIceCandidateInit) => {
         const pc = peerConnectionRef.current;
+        console.log('🧊 WebRTC candidate (remote):', candidate.candidate);
 
         if (!pc || !pc.remoteDescription) {
-            // console.log('🧊 WebRTC: ICE candidate queued: PC/remote desc not ready');
+            console.log('🧊 WebRTC: ICE candidate queued (remote desc not ready)');
             pendingIceCandidates.current.push(candidate);
             return;
         }
 
         try {
             await pc.addIceCandidate(new RTCIceCandidate(candidate));
-            // console.log('🧊 WebRTC: Remote ICE candidate added directly');
+            console.log('🧊 WebRTC: Remote ICE candidate added directly');
         } catch (error) {
             console.error('❌ WebRTC: Failed to add ICE candidate:', error);
         }

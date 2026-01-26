@@ -45,22 +45,37 @@ export interface VideoCallActions {
 
 export interface VideoCallContextType extends VideoCallState, VideoCallActions { }
 
-// WebRTC Configuration - Just STUN for maximum stability/compatibility first
+// WebRTC Configuration - Production-ready STUN + TURN relay
 export const ICE_SERVERS: RTCConfiguration = {
     iceServers: [
         { urls: 'stun:stun.l.google.com:19302' },
         { urls: 'stun:stun1.l.google.com:19302' },
-        { urls: 'stun:stun2.l.google.com:19302' }
+        { urls: 'stun:stun2.l.google.com:19302' },
+        {
+            urls: 'turn:openrelay.metered.ca:80',
+            username: 'openrelayproject',
+            credential: 'openrelayproject'
+        },
+        {
+            urls: 'turn:openrelay.metered.ca:443',
+            username: 'openrelayproject',
+            credential: 'openrelayproject'
+        },
+        {
+            urls: 'turn:openrelay.metered.ca:443?transport=tcp',
+            username: 'openrelayproject',
+            credential: 'openrelayproject'
+        }
     ],
     iceCandidatePoolSize: 10,
 };
 
-// Media Constraints - Lowering resolution significantly to ensure connection success
+// Media Constraints - Standard SD resolution for good balance of quality and stability
 export const MEDIA_CONSTRAINTS: MediaStreamConstraints = {
     video: {
-        width: { ideal: 320 },
-        height: { ideal: 240 },
-        frameRate: { ideal: 15, max: 20 },
+        width: { ideal: 640 },
+        height: { ideal: 480 },
+        frameRate: { ideal: 24, max: 30 },
         facingMode: 'user'
     },
     audio: {
