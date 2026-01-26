@@ -35,6 +35,8 @@ model User {
   storyLikes     StoryLike[]
   storyComments  StoryComment[]
   theme          String          @default("light")
+  callerCalls    VideoCall[]     @relation("CallerCalls")
+  receiverCalls  VideoCall[]     @relation("ReceiverCalls")
   createdAt      DateTime        @default(now())
 }
 
@@ -167,4 +169,29 @@ model PasswordResetToken {
   userId    String
   expiresAt DateTime
   createdAt DateTime @default(now())
+}
+
+// Video Call Feature
+enum CallStatus {
+  INITIATED
+  RINGING
+  ANSWERED
+  ENDED
+  MISSED
+  REJECTED
+  FAILED
+}
+
+model VideoCall {
+  id          String     @id @default(uuid())
+  callerId    String
+  receiverId  String
+  status      CallStatus @default(INITIATED)
+  startedAt   DateTime?
+  endedAt     DateTime?
+  duration    Int?       // Duration in seconds
+  createdAt   DateTime   @default(now())
+  
+  caller      User       @relation("CallerCalls", fields: [callerId], references: [id], onDelete: Cascade)
+  receiver    User       @relation("ReceiverCalls", fields: [receiverId], references: [id], onDelete: Cascade)
 }

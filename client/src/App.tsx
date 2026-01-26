@@ -132,14 +132,18 @@ const AppContent = () => {
 
 import { NotificationProvider } from './context/NotificationContext';
 import GlobalSplashScreen from './components/GlobalSplashScreen';
+import { VideoCallProvider, VideoCallWrapper } from './features/video-call';
 
 function App() {
   return (
     <AuthProvider>
       <ThemeProvider>
         <NotificationProvider>
-          <GlobalSplashScreen />
-          <AppContent />
+          <VideoCallProvider>
+            <GlobalSplashScreen />
+            <AppContent />
+            <VideoCallWrapper />
+          </VideoCallProvider>
         </NotificationProvider>
       </ThemeProvider>
     </AuthProvider>

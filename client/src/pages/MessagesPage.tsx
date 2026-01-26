@@ -5,7 +5,8 @@ import { useAuth } from '../context/AuthContext';
 import { useSocket } from '../hooks/useSocket.ts';
 import { useOnlinePresence } from '../hooks/useOnlinePresence.ts';
 import OnlineIndicator from '../components/OnlineIndicator.tsx';
-import { Send, Search, User, Image as ImageIcon, X } from 'lucide-react';
+import { useVideoCall } from '../features/video-call';
+import { Send, Search, User, Image as ImageIcon, X, Video } from 'lucide-react';
 import { formatDistanceToNow, format } from 'date-fns';
 import { getImageUrl } from '../config';
 
@@ -24,6 +25,7 @@ const MessagesPage = () => {
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const typingTimeoutRef = useRef<any>(null);
+    const { startCall } = useVideoCall();
 
     const location = useLocation();
 
@@ -321,6 +323,26 @@ const MessagesPage = () => {
                                     </p>
                                 ) : null}
                             </div>
+
+                            <button
+                                onClick={() => startCall(selectedUser.id, selectedUser)}
+                                style={{
+                                    padding: '8px',
+                                    borderRadius: '50%',
+                                    border: 'none',
+                                    background: 'var(--bg)',
+                                    color: 'var(--primary)',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    transition: 'all 0.2s ease',
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+                                }}
+                                title="Start Video Call"
+                            >
+                                <Video size={20} />
+                            </button>
                         </div>
 
                         {/* Messages List (Matched to screenshot) */}
