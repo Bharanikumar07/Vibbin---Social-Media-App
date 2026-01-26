@@ -137,92 +137,10 @@ io.on('connection', (socket) => {
     socket.on('typing', ({ receiverId, isTyping }) => {
         io.to(receiverId).emit('userTyping', { userId: currentUserId, isTyping });
     });
-
-    // ==================== VIDEO CALL SIGNALING ====================
-
-    // Initiate a call
-    socket.on('call-user', async (data: { targetUserId: string }) => {
-        if (!currentUserId) {
-            socket.emit('call-error', { message: 'Not authenticated' });
-            return;
-        }
-
-        try {
-            // Verify friendship
-            const friendship = await prisma.friendship.findFirst({
-                where: { userId: currentUserId, friendId: data.targetUserId }
-            });
-
-            if (!friendship) {
-                socket.emit('call-error', { message: 'You can only call friends' });
-                return;
-            }
-
-            // Get caller info
-            const caller = await prisma.user.findUnique({
-                where: { id: currentUserId },
-                select: { id: true, name: true, username: true, profilePicture: true }
-            });
-
-            console.log(`📞 Call initiated: ${currentUserId} -> ${data.targetUserId}`);
-
-            // Notify the target user
-            io.to(data.targetUserId).emit('incoming-call', {
-                callerId: currentUserId,
-                callerInfo: caller
-            });
-
-            socket.emit('call-ringing', { targetUserId: data.targetUserId });
-        } catch (error) {
-            console.error('Call initiation error:', error);
-            socket.emit('call-error', { message: 'Failed to initiate call' });
-        }
-    });
-
-    // Accept incoming call
-    socket.on('accept-call', (data: { callerId: string }) => {
-        console.log(`✅ Call accepted: ${data.callerId} <-> ${currentUserId}`);
-        io.to(data.callerId).emit('call-accepted', { acceptedBy: currentUserId });
-    });
-
-    // Reject incoming call
-    socket.on('reject-call', (data: { callerId: string }) => {
-        console.log(`❌ Call rejected: ${data.callerId} -> ${currentUserId}`);
-        io.to(data.callerId).emit('call-rejected', { rejectedBy: currentUserId });
-    });
-
-    // End call
-    socket.on('end-call', (data: { targetUserId: string }) => {
-        console.log(`📴 Call ended: ${currentUserId} <-> ${data.targetUserId}`);
-        io.to(data.targetUserId).emit('call-ended', { endedBy: currentUserId });
-    });
-
-    // Forward WebRTC offer
-    socket.on('webrtc-offer', (data: { targetUserId: string; offer: any }) => {
-        console.log(`🎥 WebRTC Offer: ${currentUserId} -> ${data.targetUserId}`);
-        io.to(data.targetUserId).emit('webrtc-offer', {
-            offer: data.offer,
-            callerId: currentUserId
-        });
-    });
-
-    // Forward WebRTC answer
-    socket.on('webrtc-answer', (data: { targetUserId: string; answer: any }) => {
-        console.log(`🎥 WebRTC Answer: ${currentUserId} -> ${data.targetUserId}`);
-        io.to(data.targetUserId).emit('webrtc-answer', {
-            answer: data.answer,
-            answererId: currentUserId
-        });
-    });
-
-    // Forward ICE candidate
-    socket.on('ice-candidate', (data: { targetUserId: string; candidate: any }) => {
-        io.to(data.targetUserId).emit('ice-candidate', {
-            candidate: data.candidate,
-            senderId: currentUserId
-        });
-    });
 });
+
+// Setup specialized signaling for video calls
+setupVideoCallSignaling(io);
 
 // Startup Handshake: Ensure PostgreSQL is ready before listening
 const startServer = async () => {

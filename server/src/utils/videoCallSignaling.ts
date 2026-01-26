@@ -4,17 +4,8 @@ import prisma from '../prisma';
 // Track active calls: callerId -> { receiverId, status, startTime }
 const activeCalls = new Map<string, { receiverId: string; status: string; startTime?: Date }>();
 
-// Track socket to user mapping
-const userSockets = new Map<string, string>(); // socketId -> userId
-
 interface CallData {
     targetUserId: string;
-    callerInfo?: {
-        id: string;
-        name: string;
-        username: string;
-        profilePicture: string | null;
-    };
 }
 
 interface SignalingData {
@@ -28,11 +19,11 @@ export const setupVideoCallSignaling = (io: Server) => {
     io.on('connection', (socket: Socket) => {
         let currentUserId: string | null = null;
 
-        // When user joins, map their socket
+        // When user joins, map their socket and join room
         socket.on('join', (userId: string) => {
             currentUserId = userId;
-            userSockets.set(socket.id, userId);
-            console.log(`📹 Video Call: User ${userId} connected with socket ${socket.id}`);
+            socket.join(userId);
+            console.log(`📹 Video Call: User ${userId} joined room ${userId} (Socket: ${socket.id})`);
         });
 
         // ==================== CALL SIGNALING ====================
@@ -40,11 +31,13 @@ export const setupVideoCallSignaling = (io: Server) => {
         // Initiate a call
         socket.on('call-user', async (data: CallData) => {
             if (!currentUserId) {
+                console.error('⚠️ call-user: Not authenticated');
                 socket.emit('call-error', { message: 'Not authenticated' });
                 return;
             }
 
             const { targetUserId } = data;
+            console.log(`📞 Signaling: call-user from ${currentUserId} to ${targetUserId}`);
 
             try {
                 // Verify friendship
@@ -53,6 +46,7 @@ export const setupVideoCallSignaling = (io: Server) => {
                 });
 
                 if (!friendship) {
+                    console.warn(`⚠️ call-user: Users ${currentUserId} and ${targetUserId} are not friends`);
                     socket.emit('call-error', { message: 'You can only call friends' });
                     return;
                 }
@@ -64,6 +58,7 @@ export const setupVideoCallSignaling = (io: Server) => {
                 });
 
                 if (!targetUser?.isOnline) {
+                    console.warn(`⚠️ call-user: Target user ${targetUserId} is offline`);
                     socket.emit('call-error', { message: 'User is offline' });
                     return;
                 }
@@ -77,9 +72,8 @@ export const setupVideoCallSignaling = (io: Server) => {
                 // Track the call
                 activeCalls.set(currentUserId, { receiverId: targetUserId, status: 'calling' });
 
-                console.log(`📞 Call initiated: ${currentUserId} -> ${targetUserId}`);
-
                 // Notify the target user
+                console.log(`📤 Emitting incoming-call to ${targetUserId}`);
                 io.to(targetUserId).emit('incoming-call', {
                     callerId: currentUserId,
                     callerInfo: caller
@@ -89,7 +83,7 @@ export const setupVideoCallSignaling = (io: Server) => {
                 socket.emit('call-ringing', { targetUserId });
 
             } catch (error) {
-                console.error('Call initiation error:', error);
+                console.error('❌ Call initiation error:', error);
                 socket.emit('call-error', { message: 'Failed to initiate call' });
             }
         });
@@ -99,16 +93,16 @@ export const setupVideoCallSignaling = (io: Server) => {
             if (!currentUserId) return;
 
             const { callerId } = data;
-            const call = activeCalls.get(callerId);
+            console.log(`✅ Signaling: accept-call by ${currentUserId} for caller ${callerId}`);
 
+            const call = activeCalls.get(callerId);
             if (call && call.receiverId === currentUserId) {
                 call.status = 'connected';
                 call.startTime = new Date();
                 activeCalls.set(callerId, call);
 
-                console.log(`✅ Call accepted: ${callerId} <-> ${currentUserId}`);
-
                 // Notify the caller that call was accepted
+                console.log(`📤 Emitting call-accepted to ${callerId}`);
                 io.to(callerId).emit('call-accepted', { acceptedBy: currentUserId });
 
                 // Log the call in database
@@ -122,8 +116,10 @@ export const setupVideoCallSignaling = (io: Server) => {
                         }
                     });
                 } catch (error) {
-                    console.error('Failed to log call:', error);
+                    console.error('❌ Failed to log call:', error);
                 }
+            } else {
+                console.warn(`⚠️ accept-call: No active call found for caller ${callerId} targetted at ${currentUserId}`);
             }
         });
 
@@ -132,14 +128,14 @@ export const setupVideoCallSignaling = (io: Server) => {
             if (!currentUserId) return;
 
             const { callerId } = data;
-            const call = activeCalls.get(callerId);
+            console.log(`❌ Signaling: reject-call by ${currentUserId} for caller ${callerId}`);
 
+            const call = activeCalls.get(callerId);
             if (call && call.receiverId === currentUserId) {
                 activeCalls.delete(callerId);
 
-                console.log(`❌ Call rejected: ${callerId} -> ${currentUserId}`);
-
                 // Notify the caller
+                console.log(`📤 Emitting call-rejected to ${callerId}`);
                 io.to(callerId).emit('call-rejected', { rejectedBy: currentUserId });
 
                 // Log the rejected call
@@ -152,7 +148,7 @@ export const setupVideoCallSignaling = (io: Server) => {
                         }
                     });
                 } catch (error) {
-                    console.error('Failed to log rejected call:', error);
+                    console.error('❌ Failed to log rejected call:', error);
                 }
             }
         });
@@ -162,6 +158,7 @@ export const setupVideoCallSignaling = (io: Server) => {
             if (!currentUserId) return;
 
             const { targetUserId } = data;
+            console.log(`📴 Signaling: end-call by ${currentUserId} with target ${targetUserId}`);
 
             // Check if current user is caller or receiver
             let call = activeCalls.get(currentUserId);
@@ -180,9 +177,8 @@ export const setupVideoCallSignaling = (io: Server) => {
 
                 activeCalls.delete(callerId);
 
-                console.log(`📴 Call ended: ${callerId} <-> ${call.receiverId} (${duration}s)`);
-
                 // Notify both parties
+                console.log(`📤 Emitting call-ended to ${targetUserId}`);
                 io.to(targetUserId).emit('call-ended', { endedBy: currentUserId, duration });
                 socket.emit('call-ended', { endedBy: currentUserId, duration });
 
@@ -208,7 +204,7 @@ export const setupVideoCallSignaling = (io: Server) => {
                         });
                     }
                 } catch (error) {
-                    console.error('Failed to update call log:', error);
+                    console.error('❌ Failed to update call log:', error);
                 }
             }
         });
@@ -219,7 +215,7 @@ export const setupVideoCallSignaling = (io: Server) => {
         socket.on('webrtc-offer', (data: SignalingData) => {
             if (!currentUserId) return;
 
-            console.log(`🎥 WebRTC Offer: ${currentUserId} -> ${data.targetUserId}`);
+            console.log(`📡 signaling: webrtc-offer from ${currentUserId} to ${data.targetUserId}`);
 
             io.to(data.targetUserId).emit('webrtc-offer', {
                 offer: data.offer,
@@ -231,7 +227,7 @@ export const setupVideoCallSignaling = (io: Server) => {
         socket.on('webrtc-answer', (data: SignalingData) => {
             if (!currentUserId) return;
 
-            console.log(`🎥 WebRTC Answer: ${currentUserId} -> ${data.targetUserId}`);
+            console.log(`📡 signaling: webrtc-answer from ${currentUserId} to ${data.targetUserId}`);
 
             io.to(data.targetUserId).emit('webrtc-answer', {
                 answer: data.answer,
@@ -243,6 +239,8 @@ export const setupVideoCallSignaling = (io: Server) => {
         socket.on('ice-candidate', (data: SignalingData) => {
             if (!currentUserId) return;
 
+            // console.log(`📡 signaling: ice-candidate from ${currentUserId} to ${data.targetUserId}`);
+
             io.to(data.targetUserId).emit('ice-candidate', {
                 candidate: data.candidate,
                 senderId: currentUserId
@@ -253,34 +251,31 @@ export const setupVideoCallSignaling = (io: Server) => {
 
         socket.on('disconnect', async () => {
             if (currentUserId) {
-                // Clean up any active calls
+                console.log(`📹 Video Call: User ${currentUserId} disconnected`);
+
+                // Clean up any active calls where this user was the caller
                 const call = activeCalls.get(currentUserId);
                 if (call) {
+                    console.log(`📴 Ending active call as caller ${currentUserId}`);
                     io.to(call.receiverId).emit('call-ended', {
                         endedBy: currentUserId,
                         reason: 'disconnect'
                     });
                     activeCalls.delete(currentUserId);
-                    console.log(`📴 Call ended due to disconnect: ${currentUserId}`);
                 }
 
                 // Check if current user was a receiver in any call
                 for (const [callerId, callData] of activeCalls.entries()) {
                     if (callData.receiverId === currentUserId) {
+                        console.log(`📴 Ending active call as receiver ${currentUserId} (caller was ${callerId})`);
                         io.to(callerId).emit('call-ended', {
                             endedBy: currentUserId,
                             reason: 'disconnect'
                         });
                         activeCalls.delete(callerId);
-                        console.log(`📴 Call ended due to receiver disconnect: ${callerId}`);
                     }
                 }
-
-                userSockets.delete(socket.id);
-                console.log(`📹 Video Call: User ${currentUserId} disconnected`);
             }
         });
     });
 };
-
-export { activeCalls, userSockets };

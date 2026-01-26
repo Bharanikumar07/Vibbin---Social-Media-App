@@ -1,6 +1,5 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import { ICE_SERVERS, MEDIA_CONSTRAINTS } from './call.types';
-import type { CallerInfo } from './call.types';
 import type { Socket } from 'socket.io-client';
 
 interface UseWebRTCProps {
@@ -22,12 +21,17 @@ export const useWebRTC = ({
     const [isMuted, setIsMuted] = useState(false);
     const [isCameraOff, setIsCameraOff] = useState(false);
 
+    // Queue for ICE candidates that arrive before remote description is set
+    const pendingIceCandidates = useRef<RTCIceCandidateInit[]>([]);
+
     // Initialize peer connection
     const createPeerConnection = useCallback(() => {
+        console.log('🏗️ Creating RTCPeerConnection');
         const pc = new RTCPeerConnection(ICE_SERVERS);
 
         pc.onicecandidate = (event) => {
             if (event.candidate && socket && targetUserId) {
+                console.log('🧊 Local ICE candidate generated');
                 socket.emit('ice-candidate', {
                     targetUserId,
                     candidate: event.candidate.toJSON()
@@ -36,19 +40,28 @@ export const useWebRTC = ({
         };
 
         pc.ontrack = (event) => {
-            console.log('🎥 Remote track received:', event.streams);
-            if (event.streams[0]) {
+            console.log('🎥 Remote track received:', event.streams.length, 'streams');
+            if (event.streams && event.streams[0]) {
+                console.log('🎥 Remote stream ID:', event.streams[0].id);
                 onRemoteStream(event.streams[0]);
             }
         };
 
         pc.onconnectionstatechange = () => {
-            console.log('📡 Connection state:', pc.connectionState);
+            console.log('📡 Peer connection state change:', pc.connectionState);
             onConnectionStateChange(pc.connectionState);
         };
 
         pc.oniceconnectionstatechange = () => {
-            console.log('🧊 ICE connection state:', pc.iceConnectionState);
+            console.log('🧊 ICE connection state change:', pc.iceConnectionState);
+        };
+
+        pc.onicegatheringstatechange = () => {
+            console.log('🧊 ICE gathering state:', pc.iceGatheringState);
+        };
+
+        pc.onsignalingstatechange = () => {
+            console.log('📶 Signaling state change:', pc.signalingState);
         };
 
         peerConnectionRef.current = pc;
@@ -57,27 +70,47 @@ export const useWebRTC = ({
 
     // Initialize local media stream
     const initializeStream = useCallback(async (): Promise<MediaStream> => {
-        // If stream already exists, return it
         if (localStreamRef.current) {
             return localStreamRef.current;
         }
 
         try {
-            console.log('📹 Requesting media access...');
+            console.log('📹 Requesting media access with constraints:', MEDIA_CONSTRAINTS);
             const stream = await navigator.mediaDevices.getUserMedia(MEDIA_CONSTRAINTS);
 
-            // Ensure tracks are enabled
-            stream.getAudioTracks().forEach(track => track.enabled = true);
-            stream.getVideoTracks().forEach(track => track.enabled = true);
+            stream.getAudioTracks().forEach(track => {
+                track.enabled = true;
+                console.log('🎤 Audio track enabled:', track.label);
+            });
+            stream.getVideoTracks().forEach(track => {
+                track.enabled = true;
+                console.log('📹 Video track enabled:', track.label);
+            });
 
             localStreamRef.current = stream;
             setLocalStream(stream);
-            console.log('📹 Local stream acquired:', stream.id);
             return stream;
         } catch (error) {
-            console.error('Failed to get media stream:', error);
+            console.error('❌ Failed to get media stream:', error);
             const errorMessage = error instanceof Error ? error.message : 'Camera/microphone permission denied';
             throw new Error(errorMessage);
+        }
+    }, []);
+
+    // Helper to process queued ICE candidates
+    const processPendingIceCandidates = useCallback(async (pc: RTCPeerConnection) => {
+        if (!pc.remoteDescription) return;
+
+        console.log(`🧊 Processing ${pendingIceCandidates.current.length} queued ICE candidates`);
+        while (pendingIceCandidates.current.length > 0) {
+            const candidate = pendingIceCandidates.current.shift();
+            if (candidate) {
+                try {
+                    await pc.addIceCandidate(new RTCIceCandidate(candidate));
+                } catch (e) {
+                    console.error('❌ Error adding queued ICE candidate:', e);
+                }
+            }
         }
     }, []);
 
@@ -85,70 +118,96 @@ export const useWebRTC = ({
     const createOffer = useCallback(async () => {
         if (!socket || !targetUserId) return;
 
+        console.log('🚀 Initiating WebRTC handshake (Caller)');
         const pc = createPeerConnection();
         const stream = await initializeStream();
 
-        // Add local tracks to peer connection
         stream.getTracks().forEach(track => {
+            console.log('➕ Adding track to PC:', track.kind);
             pc.addTrack(track, stream);
         });
 
-        // Create offer
-        const offer = await pc.createOffer();
-        await pc.setLocalDescription(offer);
+        try {
+            const offer = await pc.createOffer();
+            await pc.setLocalDescription(offer);
+            console.log('📤 Local description (offer) set, emitting to signaling server');
 
-        console.log('📤 Sending WebRTC offer');
-        socket.emit('webrtc-offer', {
-            targetUserId,
-            offer: pc.localDescription
-        });
+            socket.emit('webrtc-offer', {
+                targetUserId,
+                offer: pc.localDescription
+            });
+        } catch (error) {
+            console.error('❌ Failed to create/set offer:', error);
+        }
     }, [socket, targetUserId, createPeerConnection, initializeStream]);
 
     // Handle incoming offer and create answer (receiver)
     const handleOffer = useCallback(async (offer: RTCSessionDescriptionInit, callerId: string) => {
         if (!socket) return;
 
+        console.log('🚀 Responding to WebRTC offer (Receiver)');
         const pc = createPeerConnection();
         const stream = await initializeStream();
 
-        // Add local tracks
         stream.getTracks().forEach(track => {
+            console.log('➕ Adding track to PC:', track.kind);
             pc.addTrack(track, stream);
         });
 
-        // Set remote description
-        await pc.setRemoteDescription(new RTCSessionDescription(offer));
+        try {
+            console.log('📥 Setting remote description (offer)');
+            await pc.setRemoteDescription(new RTCSessionDescription(offer));
 
-        // Create answer
-        const answer = await pc.createAnswer();
-        await pc.setLocalDescription(answer);
+            // Now that remote description is set, we can process candidates
+            await processPendingIceCandidates(pc);
 
-        console.log('📤 Sending WebRTC answer');
-        socket.emit('webrtc-answer', {
-            targetUserId: callerId,
-            answer: pc.localDescription
-        });
-    }, [socket, createPeerConnection, initializeStream]);
+            const answer = await pc.createAnswer();
+            await pc.setLocalDescription(answer);
+            console.log('📤 Local description (answer) set, emitting to signaling server');
+
+            socket.emit('webrtc-answer', {
+                targetUserId: callerId,
+                answer: pc.localDescription
+            });
+        } catch (error) {
+            console.error('❌ Failed to handle offer/create answer:', error);
+        }
+    }, [socket, createPeerConnection, initializeStream, processPendingIceCandidates]);
 
     // Handle incoming answer
     const handleAnswer = useCallback(async (answer: RTCSessionDescriptionInit) => {
         const pc = peerConnectionRef.current;
-        if (!pc) return;
+        if (!pc) {
+            console.warn('⚠️ Received answer but peer connection does not exist');
+            return;
+        }
 
-        console.log('📥 Received WebRTC answer');
-        await pc.setRemoteDescription(new RTCSessionDescription(answer));
-    }, []);
+        try {
+            console.log('📥 Setting remote description (answer)');
+            await pc.setRemoteDescription(new RTCSessionDescription(answer));
+
+            // Now that remote description is set, we can process candidates
+            await processPendingIceCandidates(pc);
+        } catch (error) {
+            console.error('❌ Failed to set remote description (answer):', error);
+        }
+    }, [processPendingIceCandidates]);
 
     // Handle incoming ICE candidate
     const handleIceCandidate = useCallback(async (candidate: RTCIceCandidateInit) => {
         const pc = peerConnectionRef.current;
-        if (!pc) return;
+
+        if (!pc || !pc.remoteDescription) {
+            console.log('🧊 ICE candidate received before PC/remote desc ready, queueing...');
+            pendingIceCandidates.current.push(candidate);
+            return;
+        }
 
         try {
             await pc.addIceCandidate(new RTCIceCandidate(candidate));
-            console.log('🧊 ICE candidate added');
+            console.log('🧊 Remote ICE candidate added directly');
         } catch (error) {
-            console.error('Failed to add ICE candidate:', error);
+            console.error('❌ Failed to add ICE candidate:', error);
         }
     }, []);
 
@@ -161,7 +220,6 @@ export const useWebRTC = ({
         if (audioTrack) {
             audioTrack.enabled = !audioTrack.enabled;
             setIsMuted(!audioTrack.enabled);
-            console.log(`🎤 Audio ${audioTrack.enabled ? 'unmuted' : 'muted'}`);
         }
     }, []);
 
@@ -174,26 +232,25 @@ export const useWebRTC = ({
         if (videoTrack) {
             videoTrack.enabled = !videoTrack.enabled;
             setIsCameraOff(!videoTrack.enabled);
-            console.log(`📹 Video ${videoTrack.enabled ? 'on' : 'off'}`);
         }
     }, []);
 
     // Cleanup
     const cleanup = useCallback(() => {
         console.log('🧹 Cleaning up WebRTC resources');
+        pendingIceCandidates.current = [];
 
-        // Stop all local tracks
         if (localStreamRef.current) {
-            localStreamRef.current.getTracks().forEach(track => {
-                track.stop();
-                console.log(`Track ${track.kind} stopped`);
-            });
+            localStreamRef.current.getTracks().forEach(track => track.stop());
             localStreamRef.current = null;
             setLocalStream(null);
         }
 
-        // Close peer connection
         if (peerConnectionRef.current) {
+            peerConnectionRef.current.ontrack = null;
+            peerConnectionRef.current.onicecandidate = null;
+            peerConnectionRef.current.onconnectionstatechange = null;
+            peerConnectionRef.current.oniceconnectionstatechange = null;
             peerConnectionRef.current.close();
             peerConnectionRef.current = null;
         }
@@ -207,15 +264,17 @@ export const useWebRTC = ({
         if (!socket) return;
 
         const onWebRTCOffer = async (data: { offer: RTCSessionDescriptionInit; callerId: string }) => {
-            console.log('📥 Received WebRTC offer from', data.callerId);
+            console.log('📶 Signaling: webrtc-offer received');
             await handleOffer(data.offer, data.callerId);
         };
 
         const onWebRTCAnswer = (data: { answer: RTCSessionDescriptionInit }) => {
+            console.log('📶 Signaling: webrtc-answer received');
             handleAnswer(data.answer);
         };
 
         const onIceCandidate = (data: { candidate: RTCIceCandidateInit }) => {
+            console.log('📶 Signaling: ice-candidate received');
             handleIceCandidate(data.candidate);
         };
 
