@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useCallback, useRef, useEff
 import { useSocket } from '../../hooks/useSocket';
 import { useWebRTC } from './useWebRTC';
 import { useCallSocket } from './useCallSocket';
+import { callSoundManager } from '../../utils/callSounds';
 import type {
     VideoCallState,
     VideoCallActions,
@@ -84,6 +85,15 @@ export const VideoCallProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             incomingCall: data,
             callState: 'ringing'
         });
+        // Optional: Initialize camera on incoming call so user can see themselves before answering
+        // behaviors vary by app, but commonly user sees self + incoming call UI
+        // or just incoming call UI. Let's start it if possible so it's ready.
+        // webRTC.initializeStream().catch(console.error); 
+        // Actually, let's wait for acceptCall to avoid permissions prompt while just ringing?
+        // But user issue was "can't access camera".
+        // Let's stick to simple logic: Caller starts immediately. Receiver starts on accept.
+        // If receiver wants to see preview, they can enable it.
+        // For now, let's leave receiver logic as is (start on accept).
     }, [updateState]);
 
     // Handle call accepted
@@ -132,6 +142,21 @@ export const VideoCallProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         updateState({ callState: 'calling' });
     }, [updateState]);
 
+    // Manage call sounds
+    useEffect(() => {
+        if (state.callState === 'calling') {
+            callSoundManager.playRingback();
+        } else if (state.callState === 'ringing') {
+            callSoundManager.playIncomingRing();
+        } else {
+            callSoundManager.stop();
+        }
+
+        return () => {
+            callSoundManager.stop();
+        };
+    }, [state.callState]);
+
     // Call socket hook
     const callSocket = useCallSocket({
         socket,
@@ -151,6 +176,11 @@ export const VideoCallProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                 targetUserInfo,
                 callState: 'calling',
                 error: null
+            });
+            // Initialize camera immediately
+            webRTC.initializeStream().catch(error => {
+                console.error('Failed to initialize stream:', error);
+                updateState({ error: 'Failed to access camera/microphone' });
             });
             callSocket.startCall(targetUserId);
         } catch (error) {

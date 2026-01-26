@@ -55,17 +55,29 @@ export const useWebRTC = ({
         return pc;
     }, [socket, targetUserId, onRemoteStream, onConnectionStateChange]);
 
-    // Get local media stream
-    const getLocalStream = useCallback(async (): Promise<MediaStream> => {
+    // Initialize local media stream
+    const initializeStream = useCallback(async (): Promise<MediaStream> => {
+        // If stream already exists, return it
+        if (localStreamRef.current) {
+            return localStreamRef.current;
+        }
+
         try {
+            console.log('📹 Requesting media access...');
             const stream = await navigator.mediaDevices.getUserMedia(MEDIA_CONSTRAINTS);
+
+            // Ensure tracks are enabled
+            stream.getAudioTracks().forEach(track => track.enabled = true);
+            stream.getVideoTracks().forEach(track => track.enabled = true);
+
             localStreamRef.current = stream;
             setLocalStream(stream);
-            console.log('📹 Local stream acquired');
+            console.log('📹 Local stream acquired:', stream.id);
             return stream;
         } catch (error) {
             console.error('Failed to get media stream:', error);
-            throw new Error('Camera/microphone permission denied');
+            const errorMessage = error instanceof Error ? error.message : 'Camera/microphone permission denied';
+            throw new Error(errorMessage);
         }
     }, []);
 
@@ -74,7 +86,7 @@ export const useWebRTC = ({
         if (!socket || !targetUserId) return;
 
         const pc = createPeerConnection();
-        const stream = await getLocalStream();
+        const stream = await initializeStream();
 
         // Add local tracks to peer connection
         stream.getTracks().forEach(track => {
@@ -90,14 +102,14 @@ export const useWebRTC = ({
             targetUserId,
             offer: pc.localDescription
         });
-    }, [socket, targetUserId, createPeerConnection, getLocalStream]);
+    }, [socket, targetUserId, createPeerConnection, initializeStream]);
 
     // Handle incoming offer and create answer (receiver)
     const handleOffer = useCallback(async (offer: RTCSessionDescriptionInit, callerId: string) => {
         if (!socket) return;
 
         const pc = createPeerConnection();
-        const stream = await getLocalStream();
+        const stream = await initializeStream();
 
         // Add local tracks
         stream.getTracks().forEach(track => {
@@ -116,7 +128,7 @@ export const useWebRTC = ({
             targetUserId: callerId,
             answer: pc.localDescription
         });
-    }, [socket, createPeerConnection, getLocalStream]);
+    }, [socket, createPeerConnection, initializeStream]);
 
     // Handle incoming answer
     const handleAnswer = useCallback(async (answer: RTCSessionDescriptionInit) => {
@@ -228,6 +240,7 @@ export const useWebRTC = ({
         handleIceCandidate,
         toggleMute,
         toggleCamera,
+        initializeStream,
         cleanup
     };
 };
