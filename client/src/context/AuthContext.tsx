@@ -20,11 +20,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('vibebin_user');
-        if (storedUser && token) {
-            setUser(JSON.parse(storedUser));
-        }
-        setLoading(false);
+        const fetchUser = async () => {
+            if (token) {
+                try {
+                    const res = await api.get('/auth/me');
+                    setUser(res.data);
+                    localStorage.setItem('vibebin_user', JSON.stringify(res.data));
+                } catch (err) {
+                    console.error('Failed to sync user:', err);
+                    // If fetching fails (e.g. invalid token), we might want to logout
+                    // but for now, just fallback to localStorage
+                    const storedUser = localStorage.getItem('vibebin_user');
+                    if (storedUser) setUser(JSON.parse(storedUser));
+                }
+            }
+            setLoading(false);
+        };
+        fetchUser();
     }, [token]);
 
     const login = async (email: string, password: string) => {

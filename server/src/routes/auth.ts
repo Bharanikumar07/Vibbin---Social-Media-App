@@ -34,7 +34,7 @@ router.post('/signup', async (req, res, next) => {
 
         const token = jwt.sign({ id: user.id, username: user.username, name: user.name }, process.env.JWT_SECRET || 'secret');
 
-        res.status(201).json({ token, user: { id: user.id, name: user.name, username: user.username, email: user.email } });
+        res.status(201).json({ token, user: { id: user.id, name: user.name, username: user.username, email: user.email, profilePicture: user.profilePicture } });
     } catch (error) {
         next(error);
     }
@@ -59,7 +59,7 @@ router.post('/login', async (req, res, next) => {
 
         const token = jwt.sign({ id: user.id, username: user.username, name: user.name }, process.env.JWT_SECRET || 'secret');
 
-        res.json({ token, user: { id: user.id, name: user.name, username: user.username, email: user.email } });
+        res.json({ token, user: { id: user.id, name: user.name, username: user.username, email: user.email, profilePicture: user.profilePicture } });
     } catch (error) {
         next(error);
     }
@@ -103,7 +103,7 @@ router.post('/google', async (req, res, next) => {
         }
 
         const token = jwt.sign({ id: user.id, username: user.username, name: user.name }, process.env.JWT_SECRET || 'secret');
-        res.json({ token, user: { id: user.id, name: user.name, username: user.username, email: user.email } });
+        res.json({ token, user: { id: user.id, name: user.name, username: user.username, email: user.email, profilePicture: user.profilePicture } });
     } catch (error) {
         next(error);
     }
@@ -245,6 +245,29 @@ router.delete('/profile/picture', authenticateToken, async (req: any, res, next)
             profilePicture: updatedUser.profilePicture,
             theme: updatedUser.theme,
         });
+    } catch (error) {
+        next(error);
+    }
+});
+
+// Get current user profile
+router.get('/me', authenticateToken, async (req: any, res, next) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id: req.user.id },
+            select: {
+                id: true,
+                name: true,
+                username: true,
+                email: true,
+                bio: true,
+                profilePicture: true,
+                theme: true,
+                notificationSound: true
+            }
+        });
+        if (!user) return res.status(404).json({ error: 'User not found' });
+        res.json(user);
     } catch (error) {
         next(error);
     }
