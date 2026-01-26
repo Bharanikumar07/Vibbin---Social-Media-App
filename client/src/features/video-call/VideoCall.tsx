@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { useVideoCall } from './VideoCallContext';
 import { Phone, PhoneOff, Mic, MicOff, Video, VideoOff, X } from 'lucide-react';
 import './VideoCall.css';
@@ -73,7 +73,6 @@ export const VideoCall: React.FC = () => {
         resetCall
     } = useVideoCall();
 
-    const localVideoRef = useRef<HTMLVideoElement>(null);
     const remoteVideoRef = useRef<HTMLVideoElement>(null);
 
     // Callback ref to attach local stream
