@@ -94,7 +94,7 @@ export const VideoCall: React.FC = () => {
     // Don't render main UI if idle or ringing (ringing is handled by IncomingCallModal)
     if (callState === 'idle' || callState === 'ringing') return null;
 
-    const isConnecting = callState === 'calling' || callState === 'ringing';
+    const isConnecting = callState === 'calling';
     const isConnected = callState === 'connected';
     const isEnded = callState === 'ended';
 
