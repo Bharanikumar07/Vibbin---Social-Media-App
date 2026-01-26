@@ -68,6 +68,8 @@ export const VideoCallProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             }, 1000);
         } else if (connectionState === 'disconnected' || connectionState === 'failed') {
             updateState({ callState: 'ended' });
+        } else if (connectionState === 'connecting') {
+            updateState({ callState: 'connecting' });
         }
     }, [updateState]);
 
@@ -81,25 +83,17 @@ export const VideoCallProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
     // Handle incoming call
     const handleIncomingCall = useCallback((data: IncomingCallData) => {
+        console.log('📲 Incoming call from:', data.callerId);
         updateState({
             incomingCall: data,
             callState: 'ringing'
         });
-        // Optional: Initialize camera on incoming call so user can see themselves before answering
-        // behaviors vary by app, but commonly user sees self + incoming call UI
-        // or just incoming call UI. Let's start it if possible so it's ready.
-        // webRTC.initializeStream().catch(console.error); 
-        // Actually, let's wait for acceptCall to avoid permissions prompt while just ringing?
-        // But user issue was "can't access camera".
-        // Let's stick to simple logic: Caller starts immediately. Receiver starts on accept.
-        // If receiver wants to see preview, they can enable it.
-        // For now, let's leave receiver logic as is (start on accept).
     }, [updateState]);
 
     // Handle call accepted
     const handleCallAccepted = useCallback(async () => {
-        console.log('✅ Call was accepted, creating offer');
-        updateState({ callState: 'connected' });
+        console.log('✅ Call accepted by remote user, starting handshake');
+        updateState({ callState: 'connecting' });
         // Create WebRTC offer
         await webRTC.createOffer();
     }, [updateState, webRTC]);
@@ -139,6 +133,7 @@ export const VideoCallProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
     // Handle call ringing
     const handleCallRinging = useCallback(() => {
+        console.log('🔔 Remote client is ringing');
         updateState({ callState: 'calling' });
     }, [updateState]);
 
@@ -190,7 +185,7 @@ export const VideoCallProvider: React.FC<{ children: React.ReactNode }> = ({ chi
                 error: error instanceof Error ? error.message : 'Failed to start call'
             });
         }
-    }, [updateState, callSocket]);
+    }, [updateState, callSocket, webRTC]);
 
     const acceptCall = useCallback(async () => {
         if (!state.incomingCall) return;
@@ -199,7 +194,7 @@ export const VideoCallProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             updateState({
                 targetUserId: state.incomingCall.callerId,
                 targetUserInfo: state.incomingCall.callerInfo,
-                callState: 'connected',
+                callState: 'connecting', // Use connecting while handshake starts
                 incomingCall: null
             });
             callSocket.acceptCall(state.incomingCall.callerId);

@@ -94,7 +94,7 @@ export const VideoCall: React.FC = () => {
     // Don't render main UI if idle or ringing (ringing is handled by IncomingCallModal)
     if (callState === 'idle' || callState === 'ringing') return null;
 
-    const isConnecting = callState === 'calling';
+    const isConnecting = callState === 'calling' || callState === 'connecting';
     const isConnected = callState === 'connected';
     const isEnded = callState === 'ended';
 
@@ -103,7 +103,7 @@ export const VideoCall: React.FC = () => {
             <div className="video-call-container">
                 {/* Remote Video (Main View) */}
                 <div className="remote-video-container">
-                    {remoteStream ? (
+                    {remoteStream && isConnected ? (
                         <video
                             ref={remoteVideoRef}
                             autoPlay
@@ -126,7 +126,13 @@ export const VideoCall: React.FC = () => {
                             {isConnecting && (
                                 <div className="connecting-status">
                                     <div className="connecting-spinner"></div>
-                                    <p>{callState === 'calling' ? 'Calling...' : 'Connecting...'}</p>
+                                    <p>{callState === 'calling' ? 'Calling...' : 'Establishing Secure Connection...'}</p>
+                                </div>
+                            )}
+                            {!isConnecting && !isConnected && !isEnded && (
+                                <div className="connecting-status">
+                                    <div className="connecting-spinner"></div>
+                                    <p>Connecting...</p>
                                 </div>
                             )}
                         </div>

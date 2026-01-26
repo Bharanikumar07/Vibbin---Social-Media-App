@@ -1,6 +1,6 @@
 // Video Call Types
 
-export type CallState = 'idle' | 'calling' | 'ringing' | 'connected' | 'ended';
+export type CallState = 'idle' | 'calling' | 'ringing' | 'connecting' | 'connected' | 'ended';
 
 export interface CallerInfo {
     id: string;
@@ -45,7 +45,7 @@ export interface VideoCallActions {
 
 export interface VideoCallContextType extends VideoCallState, VideoCallActions { }
 
-// WebRTC Configuration
+// WebRTC Configuration - Robust set of STUN and free TURN servers
 export const ICE_SERVERS: RTCConfiguration = {
     iceServers: [
         { urls: 'stun:stun.l.google.com:19302' },
@@ -53,14 +53,33 @@ export const ICE_SERVERS: RTCConfiguration = {
         { urls: 'stun:stun2.l.google.com:19302' },
         { urls: 'stun:stun3.l.google.com:19302' },
         { urls: 'stun:stun4.l.google.com:19302' },
-    ]
+        { urls: 'stun:stun.services.mozilla.com' },
+        // Community free TURN relay (OpenRelay)
+        {
+            urls: 'turn:openrelay.metered.ca:80',
+            username: 'openrelayproject',
+            credential: 'openrelayproject'
+        },
+        {
+            urls: 'turn:openrelay.metered.ca:443',
+            username: 'openrelayproject',
+            credential: 'openrelayproject'
+        },
+        {
+            urls: 'turn:openrelay.metered.ca:443?transport=tcp',
+            username: 'openrelayproject',
+            credential: 'openrelayproject'
+        }
+    ],
+    iceCandidatePoolSize: 10,
 };
 
 // Media Constraints
 export const MEDIA_CONSTRAINTS: MediaStreamConstraints = {
     video: {
-        width: { ideal: 1280, max: 1920 },
-        height: { ideal: 720, max: 1080 },
+        width: { ideal: 640 }, // Lowering ideal resolution for better stability on unstable networks
+        height: { ideal: 360 },
+        frameRate: { ideal: 24, max: 30 },
         facingMode: 'user'
     },
     audio: {
@@ -70,5 +89,5 @@ export const MEDIA_CONSTRAINTS: MediaStreamConstraints = {
     }
 };
 
-// Call timeout duration (30 seconds)
-export const CALL_TIMEOUT_MS = 30000;
+// Call timeout duration (45 seconds - giving a bit more time for handshake)
+export const CALL_TIMEOUT_MS = 45000;
