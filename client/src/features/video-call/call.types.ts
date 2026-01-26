@@ -69,7 +69,7 @@ export const ICE_SERVERS: RTCConfiguration = {
             credential: 'openrelayproject'
         }
     ],
-    iceTransportPolicy: 'all', // Ensure all paths are considered
+    iceTransportPolicy: 'all',
     iceCandidatePoolSize: 10,
 };
 

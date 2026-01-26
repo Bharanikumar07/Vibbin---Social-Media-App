@@ -73,23 +73,24 @@ export const VideoCall: React.FC = () => {
         resetCall
     } = useVideoCall();
 
-    const remoteVideoRef = useRef<HTMLVideoElement>(null);
+    // Callback ref to attach remote stream
+    const setRemoteVideo = useCallback((node: HTMLVideoElement | null) => {
+        if (node && remoteStream) {
+            console.log('📺 Attaching remote stream to video element');
+            node.srcObject = remoteStream;
+            node.onloadedmetadata = () => {
+                node.play().catch(err => console.error("Error playing remote video:", err));
+            };
+        }
+    }, [remoteStream]);
 
-    // Callback ref to attach local stream
+    // Callback ref for local video
     const setLocalVideo = useCallback((node: HTMLVideoElement | null) => {
         if (node && localStream) {
             node.srcObject = localStream;
             node.play().catch(err => console.error("Error playing local video:", err));
         }
     }, [localStream]);
-
-    // Attach remote stream to video element
-    useEffect(() => {
-        if (remoteVideoRef.current && remoteStream) {
-            remoteVideoRef.current.srcObject = remoteStream;
-            remoteVideoRef.current.play().catch(err => console.error("Error playing remote video:", err));
-        }
-    }, [remoteStream]);
 
     // Don't render main UI if idle or ringing (ringing is handled by IncomingCallModal)
     if (callState === 'idle' || callState === 'ringing') return null;
@@ -103,9 +104,9 @@ export const VideoCall: React.FC = () => {
             <div className="video-call-container">
                 {/* Remote Video (Main View) */}
                 <div className="remote-video-container">
-                    {remoteStream && isConnected ? (
+                    {remoteStream ? (
                         <video
-                            ref={remoteVideoRef}
+                            ref={setRemoteVideo}
                             autoPlay
                             playsInline
                             className="remote-video"

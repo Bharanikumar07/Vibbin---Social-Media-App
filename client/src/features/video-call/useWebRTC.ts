@@ -74,10 +74,17 @@ export const useWebRTC = ({
         };
 
         pc.ontrack = (event) => {
-            console.log('🎥 WebRTC remote tracks:', event.streams.length, 'streams');
+            console.log('🎥 WebRTC remote track received:', event.track.kind);
+
+            // Prefer using the stream from the event if available
             if (event.streams && event.streams[0]) {
-                console.log('🎥 WebRTC remote stream ID:', event.streams[0].id);
-                onRemoteStream(event.streams[0]);
+                console.log('🎥 WebRTC using existing stream ID:', event.streams[0].id);
+                // Force a refresh of the stream object so React sees it as new
+                onRemoteStream(new MediaStream(event.streams[0].getTracks()));
+            } else {
+                // Fallback: Create a new MediaStream from the received track
+                console.log('🎥 WebRTC creating new stream for track');
+                onRemoteStream(new MediaStream([event.track]));
             }
         };
 
