@@ -91,8 +91,8 @@ export const VideoCall: React.FC = () => {
         }
     }, [remoteStream]);
 
-    // Don't render if not in a call
-    if (callState === 'idle') return null;
+    // Don't render main UI if idle or ringing (ringing is handled by IncomingCallModal)
+    if (callState === 'idle' || callState === 'ringing') return null;
 
     const isConnecting = callState === 'calling' || callState === 'ringing';
     const isConnected = callState === 'connected';
