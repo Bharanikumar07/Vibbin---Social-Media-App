@@ -239,7 +239,7 @@ export const setupVideoCallSignaling = (io: Server) => {
         socket.on('ice-candidate', (data: SignalingData) => {
             if (!currentUserId) return;
 
-            // console.log(`📡 signaling: ice-candidate from ${currentUserId} to ${data.targetUserId}`);
+            console.log(`🧊 signaling: ice-candidate from ${currentUserId} to ${data.targetUserId}`);
 
             io.to(data.targetUserId).emit('ice-candidate', {
                 candidate: data.candidate,
