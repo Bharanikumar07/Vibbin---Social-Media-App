@@ -76,17 +76,19 @@ export const VideoCall: React.FC = () => {
     const localVideoRef = useRef<HTMLVideoElement>(null);
     const remoteVideoRef = useRef<HTMLVideoElement>(null);
 
-    // Attach local stream to video element
-    useEffect(() => {
-        if (localVideoRef.current && localStream && !isCameraOff) {
-            localVideoRef.current.srcObject = localStream;
+    // Callback ref to attach local stream
+    const setLocalVideo = useCallback((node: HTMLVideoElement | null) => {
+        if (node && localStream) {
+            node.srcObject = localStream;
+            node.play().catch(err => console.error("Error playing local video:", err));
         }
-    }, [localStream, isCameraOff]);
+    }, [localStream]);
 
     // Attach remote stream to video element
     useEffect(() => {
         if (remoteVideoRef.current && remoteStream) {
             remoteVideoRef.current.srcObject = remoteStream;
+            remoteVideoRef.current.play().catch(err => console.error("Error playing remote video:", err));
         }
     }, [remoteStream]);
 
@@ -134,15 +136,17 @@ export const VideoCall: React.FC = () => {
 
                 {/* Local Video (Picture-in-Picture) */}
                 <div className={`local-video-container ${isCameraOff ? 'camera-off' : ''}`}>
-                    {localStream && !isCameraOff ? (
+                    {localStream && (
                         <video
-                            ref={localVideoRef}
+                            ref={setLocalVideo}
                             autoPlay
                             playsInline
                             muted
-                            className="local-video"
+                            className={`local-video ${isCameraOff ? 'hidden' : ''}`}
+                            style={{ display: isCameraOff ? 'none' : 'block' }}
                         />
-                    ) : (
+                    )}
+                    {isCameraOff && (
                         <div className="local-video-off">
                             <VideoOff size={24} />
                         </div>
