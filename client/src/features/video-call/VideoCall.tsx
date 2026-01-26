@@ -78,10 +78,10 @@ export const VideoCall: React.FC = () => {
 
     // Attach local stream to video element
     useEffect(() => {
-        if (localVideoRef.current && localStream) {
+        if (localVideoRef.current && localStream && !isCameraOff) {
             localVideoRef.current.srcObject = localStream;
         }
-    }, [localStream]);
+    }, [localStream, isCameraOff]);
 
     // Attach remote stream to video element
     useEffect(() => {
