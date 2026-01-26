@@ -251,30 +251,47 @@ export const setupVideoCallSignaling = (io: Server) => {
 
         socket.on('disconnect', async () => {
             if (currentUserId) {
-                console.log(`📹 Video Call: User ${currentUserId} disconnected`);
+                console.log(`📹 Video Call: Socket ${socket.id} for user ${currentUserId} disconnected`);
 
-                // Clean up any active calls where this user was the caller
-                const call = activeCalls.get(currentUserId);
-                if (call) {
-                    console.log(`📴 Ending active call as caller ${currentUserId}`);
-                    io.to(call.receiverId).emit('call-ended', {
-                        endedBy: currentUserId,
-                        reason: 'disconnect'
-                    });
-                    activeCalls.delete(currentUserId);
-                }
+                // Use a local copy of userId to avoid closure issues
+                const userIdToClean = currentUserId;
 
-                // Check if current user was a receiver in any call
-                for (const [callerId, callData] of activeCalls.entries()) {
-                    if (callData.receiverId === currentUserId) {
-                        console.log(`📴 Ending active call as receiver ${currentUserId} (caller was ${callerId})`);
-                        io.to(callerId).emit('call-ended', {
-                            endedBy: currentUserId,
-                            reason: 'disconnect'
-                        });
-                        activeCalls.delete(callerId);
+                // Wait briefly to see if it's a transient reconnection (common on mobile)
+                setTimeout(async () => {
+                    try {
+                        // Check if user has any other active sockets in their private room
+                        const remainingSockets = await io.in(userIdToClean).fetchSockets();
+
+                        if (remainingSockets.length === 0) {
+                            console.log(`📴 User ${userIdToClean} is truly offline. Cleaning up active calls.`);
+
+                            // Clean up as caller
+                            const call = activeCalls.get(userIdToClean);
+                            if (call) {
+                                io.to(call.receiverId).emit('call-ended', {
+                                    endedBy: userIdToClean,
+                                    reason: 'disconnect'
+                                });
+                                activeCalls.delete(userIdToClean);
+                            }
+
+                            // Clean up as receiver
+                            for (const [callerId, callData] of activeCalls.entries()) {
+                                if (callData.receiverId === userIdToClean) {
+                                    io.to(callerId).emit('call-ended', {
+                                        endedBy: userIdToClean,
+                                        reason: 'disconnect'
+                                    });
+                                    activeCalls.delete(callerId);
+                                }
+                            }
+                        } else {
+                            console.log(`✅ User ${userIdToClean} still has ${remainingSockets.length} sockets active. Call maintained.`);
+                        }
+                    } catch (error) {
+                        console.error('❌ Error during disconnect cleanup:', error);
                     }
-                }
+                }, 3000); // 3 second grace period for reconnection
             }
         });
     });

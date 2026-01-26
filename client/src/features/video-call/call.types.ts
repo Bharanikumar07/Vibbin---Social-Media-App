@@ -51,6 +51,7 @@ export const ICE_SERVERS: RTCConfiguration = {
         { urls: 'stun:stun.l.google.com:19302' },
         { urls: 'stun:stun1.l.google.com:19302' },
         { urls: 'stun:stun2.l.google.com:19302' },
+        // Primary TURN relay (Metered.ca)
         {
             urls: 'turn:openrelay.metered.ca:80',
             username: 'openrelayproject',
@@ -61,12 +62,14 @@ export const ICE_SERVERS: RTCConfiguration = {
             username: 'openrelayproject',
             credential: 'openrelayproject'
         },
+        // Backup TURN relay (Standard TLS)
         {
             urls: 'turn:openrelay.metered.ca:443?transport=tcp',
             username: 'openrelayproject',
             credential: 'openrelayproject'
         }
     ],
+    iceTransportPolicy: 'all', // Ensure all paths are considered
     iceCandidatePoolSize: 10,
 };
 

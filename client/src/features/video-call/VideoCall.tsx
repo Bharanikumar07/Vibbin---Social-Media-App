@@ -127,6 +127,9 @@ export const VideoCall: React.FC = () => {
                                 <div className="connecting-status">
                                     <div className="connecting-spinner"></div>
                                     <p>{callState === 'calling' ? 'Calling...' : 'Establishing Secure Connection...'}</p>
+                                    <span className="troubleshoot-hint">
+                                        Hint: Ensure both users are on stable internet and have granted camera access.
+                                    </span>
                                 </div>
                             )}
                             {!isConnecting && !isConnected && !isEnded && (

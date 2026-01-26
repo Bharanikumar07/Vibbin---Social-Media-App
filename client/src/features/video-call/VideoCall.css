@@ -89,6 +89,14 @@
     gap: 1rem;
     color: rgba(255, 255, 255, 0.8);
     font-size: 1.1rem;
+    text-align: center;
+    max-width: 300px;
+}
+
+.troubleshoot-hint {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 10px;
 }
 
 .connecting-spinner {
