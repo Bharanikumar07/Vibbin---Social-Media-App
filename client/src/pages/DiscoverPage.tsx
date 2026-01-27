@@ -66,7 +66,7 @@ const DiscoverPage = () => {
                 </form>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))', gap: '24px' }}>
                 {results.map(user => (
                     <div key={user.id} className="card" style={{ padding: '24px', textAlign: 'center' }}>
                         <div className="avatar" style={{ width: '80px', height: '80px', margin: '0 auto 16px', overflow: 'hidden' }}>

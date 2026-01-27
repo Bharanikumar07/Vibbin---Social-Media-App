@@ -201,7 +201,7 @@ textarea {
 
 .btn-secondary {
   background: var(--bg);
-  color: white !important;
+  color: var(--text-main) !important;
   padding: 12px 24px;
   border-radius: var(--radius);
   font-weight: 600;
@@ -577,6 +577,50 @@ textarea {
 
 .footer-link:hover::after {
   width: 100%;
+}
+
+/* Profile Header Responsive Styles */
+.profile-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: -60px;
+  margin-bottom: 20px;
+  gap: 16px;
+  position: relative;
+  z-index: 10;
+}
+
+.profile-avatar-wrapper {
+  flex-shrink: 0;
+}
+
+.profile-actions-wrapper {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+@media (max-width: 640px) {
+  .profile-header-container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: -50px;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .profile-actions-wrapper {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .profile-avatar-wrapper .avatar {
+    width: 100px !important;
+    height: 100px !important;
+  }
 }
 
 /* Mobile Nav (Hide on desktop) */

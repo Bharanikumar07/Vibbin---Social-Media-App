@@ -199,26 +199,28 @@ const ProfilePage = () => {
             <div className="card" style={{ padding: 0, overflow: 'hidden', marginBottom: '24px' }}>
                 <div style={{ height: '200px', background: 'linear-gradient(135deg, var(--primary), #a855f7)' }}></div>
                 <div style={{ padding: '0 24px 24px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '-60px', marginBottom: '20px' }}>
-                        <div className="avatar" style={{ width: '120px', height: '120px', borderRadius: '50%', background: 'var(--surface)', border: '4px solid var(--bg)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', fontWeight: '800', position: 'relative' }}>
-                            {profile.profilePicture ? (
-                                <img src={getImageUrl(profile.profilePicture)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="" />
-                            ) : (
-                                profile.name[0]
-                            )}
-                            <OnlineIndicator
-                                isOnline={getUserStatus(profile.id).isOnline}
-                                lastSeen={getUserStatus(profile.id).lastSeen}
-                                size="large"
-                                position="bottom-right"
-                            />
+                    <div className="profile-header-container">
+                        <div className="profile-avatar-wrapper">
+                            <div className="avatar" style={{ width: '120px', height: '120px', borderRadius: '50%', background: 'var(--surface)', border: '4px solid var(--bg)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', fontWeight: '800', position: 'relative' }}>
+                                {profile.profilePicture ? (
+                                    <img src={getImageUrl(profile.profilePicture)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="" />
+                                ) : (
+                                    profile.name[0]
+                                )}
+                                <OnlineIndicator
+                                    isOnline={getUserStatus(profile.id).isOnline}
+                                    lastSeen={getUserStatus(profile.id).lastSeen}
+                                    size="large"
+                                    position="bottom-right"
+                                />
+                            </div>
                         </div>
-                        <div style={{ display: 'flex', gap: '12px' }}>
+                        <div className="profile-actions-wrapper">
                             {isOwnProfile ? (
                                 <button
                                     onClick={() => setIsEditModalOpen(true)}
                                     className="btn-secondary"
-                                    style={{ padding: '10px 20px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '600', cursor: 'pointer', color: 'white' }}
+                                    style={{ padding: '10px 20px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '600', cursor: 'pointer' }}
                                 >
                                     <Edit3 size={18} />
                                     Edit Profile
