@@ -253,7 +253,8 @@ textarea {
   flex: 1;
   padding: 32px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   min-height: 100vh;
 }
 
@@ -600,6 +601,7 @@ textarea {
   gap: 12px;
   flex-wrap: wrap;
   justify-content: flex-end;
+  row-gap: 12px;
 }
 
 @media (max-width: 640px) {
@@ -609,17 +611,39 @@ textarea {
     justify-content: center;
     margin-top: -50px;
     text-align: center;
-    gap: 12px;
+    gap: 16px;
+    width: 100%;
   }
 
   .profile-actions-wrapper {
     justify-content: center;
     width: 100%;
+    flex-direction: row;
+    padding: 0 16px;
+  }
+
+  .profile-actions-wrapper>* {
+    flex: 1;
+    min-width: 140px;
+    max-width: 200px;
   }
 
   .profile-avatar-wrapper .avatar {
     width: 100px !important;
     height: 100px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-actions-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+  }
+
+  .profile-actions-wrapper>* {
+    max-width: 100%;
+    width: 100%;
   }
 }
 
