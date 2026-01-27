@@ -639,11 +639,14 @@ textarea {
     flex-direction: column;
     align-items: stretch;
     padding: 0;
+    gap: 10px;
+    min-height: 50px;
   }
 
   .profile-actions-wrapper>* {
     max-width: 100%;
     width: 100%;
+    min-height: 44px;
   }
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Search, Bell, User, MessageSquare } from 'lucide-react';
+import { Home, Search, Bell, User, MessageSquare, Users } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useNotifications } from '../context/NotificationContext';
 import '../styles/Notifications.css';
@@ -34,14 +34,17 @@ const MobileNav = () => {
         }
       `}</style>
             <NavLink to="/" style={({ isActive }) => ({ color: isActive ? 'var(--primary)' : 'var(--text-muted)' })}>
-                <Home size={24} />
+                <Home size={22} />
             </NavLink>
             <NavLink to="/discover" style={({ isActive }) => ({ color: isActive ? 'var(--primary)' : 'var(--text-muted)' })}>
-                <Search size={24} />
+                <Search size={22} />
+            </NavLink>
+            <NavLink to="/connections" style={({ isActive }) => ({ color: isActive ? 'var(--primary)' : 'var(--text-muted)' })}>
+                <Users size={22} />
             </NavLink>
             <NavLink to="/notifications" style={({ isActive }) => ({ color: isActive ? 'var(--primary)' : 'var(--text-muted)', position: 'relative' })}>
                 <div style={{ position: 'relative' }}>
-                    <Bell size={24} className={showBellAnimation ? 'bell-shake' : ''} />
+                    <Bell size={22} className={showBellAnimation ? 'bell-shake' : ''} />
                     {unreadCount > 0 && (
                         <span className="notification-badge" style={{
                             position: 'absolute',
@@ -66,10 +69,10 @@ const MobileNav = () => {
                 </div>
             </NavLink>
             <NavLink to="/messages" style={({ isActive }) => ({ color: isActive ? 'var(--primary)' : 'var(--text-muted)' })}>
-                <MessageSquare size={24} />
+                <MessageSquare size={22} />
             </NavLink>
             <NavLink to={`/profile/me`} style={({ isActive }) => ({ color: isActive ? 'var(--primary)' : 'var(--text-muted)' })}>
-                <User size={24} />
+                <User size={22} />
             </NavLink>
         </nav>
     );

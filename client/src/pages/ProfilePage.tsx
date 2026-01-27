@@ -201,7 +201,20 @@ const ProfilePage = () => {
                 <div style={{ padding: '0 24px 24px' }}>
                     <div className="profile-header-container">
                         <div className="profile-avatar-wrapper">
-                            <div className="avatar" style={{ width: '120px', height: '120px', borderRadius: '50%', background: 'var(--surface)', border: '4px solid var(--bg)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', fontWeight: '800', position: 'relative' }}>
+                            <div className="avatar" style={{
+                                width: '120px',
+                                height: '120px',
+                                borderRadius: '50%',
+                                background: 'var(--surface)',
+                                border: '4px solid var(--bg)',
+                                overflow: 'hidden',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                fontSize: '3rem',
+                                fontWeight: '800',
+                                position: 'relative'
+                            }}>
                                 {profile.profilePicture ? (
                                     <img src={getImageUrl(profile.profilePicture)} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="" />
                                 ) : (
@@ -220,33 +233,62 @@ const ProfilePage = () => {
                                 <button
                                     onClick={() => setIsEditModalOpen(true)}
                                     className="btn-secondary"
-                                    style={{ padding: '10px 20px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '600', cursor: 'pointer' }}
+                                    style={{
+                                        padding: '10px 20px',
+                                        borderRadius: '12px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '8px',
+                                        fontWeight: '600',
+                                        cursor: 'pointer',
+                                        flexShrink: 0
+                                    }}
                                 >
                                     <Edit3 size={18} />
-                                    Edit Profile
+                                    <span>Edit Profile</span>
                                 </button>
                             ) : (
-                                <>
+                                <div style={{ display: 'flex', gap: '12px', width: '100%', justifyContent: 'inherit', flexWrap: 'wrap' }}>
                                     {!profile.isFriend && (
                                         <button
                                             onClick={handleFriendAction}
                                             className="btn-primary"
-                                            style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                                            style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                gap: '8px',
+                                                flexShrink: 0,
+                                                padding: '10px 20px',
+                                                minWidth: '120px'
+                                            }}
                                             disabled={profile.requestStatus === 'sent'}
                                         >
                                             <UserPlus size={18} />
-                                            {profile.requestStatus === 'sent' ? 'Request Sent' : profile.requestStatus === 'received' ? 'Accept Request' : 'Add Friend'}
+                                            <span>{profile.requestStatus === 'sent' ? 'Request Sent' : profile.requestStatus === 'received' ? 'Accept' : 'Connect'}</span>
                                         </button>
                                     )}
                                     <button
                                         onClick={() => navigate('/messages', { state: { user: profile } })}
                                         className="btn-secondary"
-                                        style={{ padding: '10px 20px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '600', cursor: 'pointer' }}
+                                        style={{
+                                            padding: '10px 20px',
+                                            borderRadius: '12px',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            gap: '8px',
+                                            fontWeight: '600',
+                                            cursor: 'pointer',
+                                            flexShrink: 0,
+                                            minWidth: '120px'
+                                        }}
                                     >
                                         <MessageCircle size={18} />
-                                        Message
+                                        <span>Message</span>
                                     </button>
-                                </>
+                                </div>
                             )}
                         </div>
                     </div>
