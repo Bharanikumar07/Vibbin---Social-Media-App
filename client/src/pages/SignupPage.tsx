@@ -105,7 +105,7 @@ const SignupPage = () => {
                                         type="text"
                                         value={formData.name}
                                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                                        placeholder="Bharanikumar"
+                                        placeholder="Enter Your Name:"
                                         required
                                     />
                                 </div>
@@ -115,7 +115,7 @@ const SignupPage = () => {
                                         type="text"
                                         value={formData.username}
                                         onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                                        placeholder="bharan"
+                                        placeholder="Enter Your Username:"
                                         required
                                     />
                                 </div>
@@ -126,7 +126,7 @@ const SignupPage = () => {
                                 type="email"
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                placeholder="bharan@vibebin.com"
+                                placeholder="xyz@vibebin.com"
                                 required
                             />
 
@@ -135,7 +135,7 @@ const SignupPage = () => {
                                 type="password"
                                 value={formData.password}
                                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                placeholder="••••••••"
+                                placeholder="Enter Your password:"
                                 required
                             />
 
