@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, Link } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import LoginPage from './pages/LoginPage.tsx';
@@ -14,6 +14,8 @@ import MessagesPage from './pages/MessagesPage.tsx';
 import NotificationsPage from './pages/NotificationsPage.tsx';
 import Sidebar from './components/Sidebar.tsx';
 import MobileNav from './components/MobileNav.tsx';
+import PrivacyPolicy from './pages/PrivacyPolicy.tsx';
+import TermsOfService from './pages/TermsOfService.tsx';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { token, loading } = useAuth();
@@ -44,6 +46,8 @@ const Layout = () => {
           <Route path="/discover" element={<ProtectedRoute><DiscoverPage /></ProtectedRoute>} />
           <Route path="/messages" element={<ProtectedRoute><MessagesPage /></ProtectedRoute>} />
           <Route path="/notifications" element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
         </Routes>
         {showFooter && (
           <footer style={{
@@ -97,8 +101,8 @@ const Layout = () => {
                 fontSize: '14px',
                 fontWeight: '600'
               }}>
-                <a href="#" className="footer-link">Privacy Policy</a>
-                <a href="#" className="footer-link">Terms of Service</a>
+                <Link to="/privacy-policy" className="footer-link">Privacy Policy</Link>
+                <Link to="/terms-of-service" className="footer-link">Terms of Service</Link>
                 <a href="mailto:bharanikumargv07@gmail.com" className="footer-link">Contact Us</a>
               </div>
 

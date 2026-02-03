@@ -169,10 +169,14 @@ const LoginPage = () => {
                             />
                         </div>
                     </div>
-                    <div className="auth-card-footer">
+                    <div className="auth-card-footer" style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center' }}>
                         <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}>
                             Don't have an account? <Link to="/signup" className="auth-link">Sign up</Link>
                         </span>
+                        <div style={{ display: 'flex', gap: '16px', marginTop: '4px' }}>
+                            <Link to="/privacy-policy" style={{ fontSize: '12px', color: 'var(--text-muted)', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}>Privacy Policy</Link>
+                            <Link to="/terms-of-service" style={{ fontSize: '12px', color: 'var(--text-muted)', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.color = 'var(--primary)'} onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}>Terms of Service</Link>
+                        </div>
                     </div>
                 </div>
             </div>
